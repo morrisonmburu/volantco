@@ -19,6 +19,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::group(['middleware' => ['web']], function(){
+
+	Route::resource("courier", "courierController");
+	Route::resource("truck", "truckController");
+
+});
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
+
+Route::get('/excelcouriers', 'DashboardController@makeExcelCouriers')->name("excelcouriers");
+Route::get('/csvcouriers', 'DashboardController@makeCsvCouriers')->name("csvcouriers");
+Route::get('/pdfcouriers', 'DashboardController@makePdfCouriers')->name("pdfcouriers");

@@ -3,9 +3,29 @@ import Vue from 'vue'
     import Vuetify from 'vuetify'
     import VueTelInput from 'vue-tel-input'
 
+    import * as VueGoogleMaps from "vue2-google-maps";
+
+    Vue.use(VueGoogleMaps, {
+        load: {
+            key: "AIzaSyC_WPxndykde_MAUC_5FKnXPp035kJw5nI",
+            libraries: "places"
+        }
+    })
+
+    import VueFormWizard from 'vue-form-wizard'
+    import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+    //local registration
+    import {FormWizard, TabContent} from 'vue-form-wizard'
+    import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+    
+    import VueFormGenerator from "vue-form-generator"
+    import 'vue-form-generator/dist/vfg.css'
+
     Vue.use(VueRouter)
     Vue.use(Vuetify)
     Vue.use(VueTelInput)
+    Vue.use(VueFormWizard)
+    Vue.use(VueFormGenerator)
 
     import App from './views/App'
     import Home from './views/Home'
@@ -53,10 +73,10 @@ import Vue from 'vue'
                 if (to.matched.some(record => record.meta.is_user)) {
                    
                 
-                        next({
-		                    path: '/volantuser/home',
-		                    params: { nextUrl: to.fullPath }
-		                })
+                  //       next({
+		                //     path: '/volantuser/home',
+		                //     params: { nextUrl: to.fullPath }
+		                // })
                     
                 }
                 next()
@@ -72,5 +92,7 @@ import Vue from 'vue'
         el: '#app',
         components: { App },
         router,
-        vuetify
+        vuetify,
+        FormWizard,
+        TabContent
     });

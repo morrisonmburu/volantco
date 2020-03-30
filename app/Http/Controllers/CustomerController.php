@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\User;
+use App\Volantuser;
 use Validator;
 use Auth;
 
@@ -14,11 +14,11 @@ class CustomerController extends Controller
         $status = 401;
         $response = ['error' => 'Unauthorized'];
 
-        if (Auth::guard('web')->attempt($request->only(['email', 'password']))) {
+        if (Auth::guard('volantuser')->attempt($request->only(['email', 'password']))) {
             $status = 200;
             $response = [
-                'user' => Auth::guard('web')->user(),
-                'token' => Auth::guard('web')->user()->createToken('usertoken')->accessToken,
+                'user' => Auth::guard('volantuser')->user(),
+                'token' => Auth::guard('volantuser')->user()->createToken('usertoken')->accessToken,
             ];
         }
 
@@ -44,7 +44,7 @@ class CustomerController extends Controller
             $data = $request->only(['name', 'email', 'phone','password']);
             $data['password'] = bcrypt($data['password']);
 
-            $user = User::create($data);
+            $user = Volantuser::create($data);
             $user->is_admin = 0;
 
             return response()->json([

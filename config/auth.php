@@ -46,6 +46,16 @@ return [
             'provider' => 'users',
             'hash' => false,
         ],
+
+        'volantuser' => [
+            'driver' => 'session',
+            'provider' => 'volantusers',
+        ],
+
+        'volantuser-api' => [
+            'driver' => 'passport',
+            'provider' => 'volantusers',
+        ],
     ],
 
     /*
@@ -69,6 +79,11 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\User::class,
+        ],
+
+        'volantusers' => [
+            'driver' => 'eloquent',
+            'model' => App\Volantuser::class,
         ],
 
         // 'users' => [
@@ -95,6 +110,12 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+
+        'volantusers' => [
+            'provider' => 'volantusers',
             'table' => 'password_resets',
             'expire' => 60,
         ],
