@@ -7,70 +7,55 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Volant | Courier</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <link href="{{url('https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900')}}" rel="stylesheet" type="text/css">
+    <link href="{{url('assets/css/icons/icomoon/styles.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{url('assets/css/bootstrap.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{url('assets/css/core.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{url('assets/css/components.css')}}" rel="stylesheet" type="text/css">
+    <link href="{{url('assets/css/colors.css')}}" rel="stylesheet" type="text/css">
+    <!-- /global stylesheets -->
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <!-- Core JS files -->
+    <script type="text/javascript" src="{{url('assets/js/plugins/loaders/pace.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('assets/js/core/libraries/jquery.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('assets/js/core/libraries/bootstrap.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('assets/js/plugins/loaders/blockui.min.js')}}"></script>
+    <!-- /core JS files -->
 
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Theme JS files -->
+    <script type="text/javascript" src="{{url('assets/js/plugins/forms/validation/validate.min.js')}}"></script>
+    <script type="text/javascript" src="{{url('assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
+
+    <script type="text/javascript" src="{{url('assets/js/core/app.js')}}"></script>
+    <script type="text/javascript" src="{{url('assets/js/pages/login_validation.js')}}"></script>
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<body class="login-container login-cover">
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
+    <!-- Page container -->
+    <div class="page-container">
 
-                    </ul>
+        <!-- Page content -->
+        <div class="page-content">
 
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                            </li>
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+            <!-- Main content -->
+            <div class="content-wrapper">
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form>
-                               
-                            </li>
-                        @endguest
-                    </ul>
+                <div class="content pb-20">
+                    @yield('content')
                 </div>
-            </div>
-        </nav>
 
-        <main class="py-4">
-            @yield('content')
-        </main>
+            </div>
+            <!-- /main content -->
+
+        </div>
+        <!-- /page content -->
+
     </div>
+    <!-- /page container -->
+
 </body>
 </html>
+

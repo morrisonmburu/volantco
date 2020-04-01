@@ -52,4 +52,20 @@ class CustomerController extends Controller
                 'token' => $user->createToken('usertoken')->accessToken,
             ]);
     }
+
+    public function getCustomers(){
+        $data = Volantuser::orderBy("id", "desc")->get();
+        return view("dashboard.customer")->withData($data);
+    }
+
+    public function destroy($id){
+        $customer = Volantuser::find($id);
+        $customer->delete();
+        return redirect('/customers')->with('success', 'Volant Customer successfully removed');
+    }
+
+    public function show($id){
+        $data = Volantuser::find($id);
+        return view("dashboard.showCustomer")->withData($data);
+    }
 }

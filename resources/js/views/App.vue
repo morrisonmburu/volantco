@@ -5,6 +5,7 @@
       v-model="drawer"
       :clipped="$vuetify.breakpoint.lgAndUp"
       app
+      temporary
       v-if="isLoggedIn"
     >
     <v-toolbar justify-center color="info">
@@ -14,74 +15,31 @@
         </v-toolbar>
       <v-spacer></v-spacer>
       <v-list dense>
-        <template v-for="item in items">
-          <v-layout
-            v-if="item.heading"
-            :key="item.heading"
-            row
-            align-center
-          >
-            <v-flex xs6>
-              <v-subheader v-if="item.heading">
-                {{ item.heading }}
-              </v-subheader>
-            </v-flex>
-            <v-flex
-              xs6
-              class="text-xs-center"
-            >
-              <a
-                href="#!"
-                class="body-2 black--text"
-              >EDIT</a>
-            </v-flex>
-          </v-layout>
-          <v-list-group
-            v-else-if="item.children"
-            :key="item.text"
-            v-model="item.model"
-            :prepend-icon="item.model ? item.icon : item['icon-alt']"
-            append-icon=""
-          >
-            <template v-slot:activator>
-              <v-list-item>
-                <v-list-item-content>
-                  <v-list-item-title>
-                    {{ item.text }}
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
-            </template>
-            <v-list-item
-              v-for="(child, i) in item.children"
-              :key="i"
-              @click=""
-            >
-              <v-list-item-action v-if="child.icon">
-                <v-icon>{{ child.icon }}</v-icon>
-              </v-list-item-action>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ child.text }}
-                </v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list-group>
           <v-list-item
-            v-else
-            :key="item.text"
-            @click=""
+            
+            @click="dashboard" 
           >
             <v-list-item-action>
-              <v-icon>{{ item.icon }}</v-icon>
+              <v-icon>dashboard</v-icon>
             </v-list-item-action>
             <v-list-item-content>
               <v-list-item-title>
-                {{ item.text }}
+                Dashboard
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-        </template>
+          <v-list-item
+            @click="navigate('orders')" 
+          >
+            <v-list-item-action>
+              <v-icon>store</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                Orders
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -144,6 +102,10 @@
 </main>
 </template>
 
+<style>
+  *{ text-transform: none !important; }
+</style>
+
 <script>
 	export default{
 		  name: "App",
@@ -151,33 +113,31 @@
         isLoggedIn: localStorage.getItem('volant.jwt') != null,
         name: "",
         dialog: false,
-        drawer: null,
+        drawer: false,
         items: [
-          { icon: 'dashboard', text: 'Dashboard' },
-          { icon: 'store', text: 'Products' },
-          { icon: 'account_circle', text: 'My profile' },
-          {
-            icon: 'keyboard_arrow_up',
-            'icon-alt': 'keyboard_arrow_down',
-            text: 'Labels',
-            model: true,
-            children: [
-              { icon: 'add', text: 'Create label' },
-            ],
-          },
-          {
-            icon: 'keyboard_arrow_up',
-            'icon-alt': 'keyboard_arrow_down',
-            text: 'More',
-            model: false,
-            children: [
-              { text: 'Import' },
-              { text: 'Export' },
-              { text: 'Print' },
-              { text: 'Undo changes' },
-              { text: 'Other contacts' },
-            ],
-          },
+          // { icon: 'account_circle', text: 'My profile' },
+          // {
+          //   icon: 'keyboard_arrow_up',
+          //   'icon-alt': 'keyboard_arrow_down',
+          //   text: 'Labels',
+          //   model: true,
+          //   children: [
+          //     { icon: 'add', text: 'Create label' },
+          //   ],
+          // },
+          // {
+          //   icon: 'keyboard_arrow_up',
+          //   'icon-alt': 'keyboard_arrow_down',
+          //   text: 'More',
+          //   model: false,
+          //   children: [
+          //     { text: 'Import' },
+          //     { text: 'Export' },
+          //     { text: 'Print' },
+          //     { text: 'Undo changes' },
+          //     { text: 'Other contacts' },
+          //   ],
+          // },
       ],
     }),
     beforeMount() {
@@ -203,6 +163,12 @@
         this.change()
         window.location.replace("http://127.0.0.1:8000/volantuser/login")
         // this.$router.push('/')
+      },
+      navigate(to){
+        this.$router.push(to)
+      },
+      dashboard(){
+        window.location.replace("http://127.0.0.1:8000/volantuser/home")
       }
     }
 	}

@@ -16,9 +16,8 @@ use Illuminate\Http\Request;
 Route::post('login', 'CustomerController@login');
 Route::post('register', 'CustomerController@register');
 
-Route::get('/getorders', 'ordersController@allOrders');
 Route::post('/storeorders', 'ordersController@store');
 
 Route::group(['middleware' => 'auth:volantuser-api'], function(){
-
+	Route::get('/getorders', 'ordersController@allOrders');
 });

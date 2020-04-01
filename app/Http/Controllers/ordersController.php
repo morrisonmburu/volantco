@@ -15,11 +15,12 @@ class ordersController extends Controller
      */
     public function index()
     {
-        //
+        $data = Orders::orderBy("id", "desc")->get();
+        return view("dashboard.orders")->withData($data);
     }
 
     public function allOrders(){
-        return response()->json(Orders::paginate(10),200);
+        return response()->json(Orders::all(),200);
     }
 
     /**
@@ -40,19 +41,16 @@ class ordersController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->json()->all();
-
-        dd($data);
+        // dd($request);
 
         $validator = Validator::make($request->json()->all(), [
                 'to' => 'required|max:255',
                 'from' => 'required|max:255',
-                'package' => 'required|max:255',
+                'packages' => 'required|max:255',
                 'info' => 'required|max:255',
-                'time' => 'required',
+                'datetime' => 'required',
                 'email' => 'required',
-                'phone' => 'required|max:12',
-                'instructions' => 'required|max:255'
+                'phone' => 'required|max:12'
             ]);
 
         if ($validator->fails()) {
@@ -63,12 +61,14 @@ class ordersController extends Controller
 
         $order->to = $request->to;
         $order->from = $request->from;
-        $order->package = $request->package;
+        $order->package = $request->packages;
         $order->info = $request->info;
-        $order->time = $request->time;
+        $order->time = $request->datetime;
+        $order->mark = 0;
+        $order->cancel = 0;
         $order->email = $request->email;
         $order->phone = $request->phone;
-        $order->instructions = $request->instructions;
+        $order->instructions = $request->info;
 
         $order->save();
 
@@ -87,7 +87,8 @@ class ordersController extends Controller
      */
     public function show($id)
     {
-        //
+        $data = Orders::find($id);
+        return view("dashboard.showOrder")->withData($data);
     }
 
     /**
@@ -96,9 +97,10 @@ class ordersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function dispatch($id)
     {
-        //
+        $data = Orders::find($id);
+        return view("dashboard.dispatch")->withData($data);
     }
 
     /**
@@ -121,6 +123,8 @@ class ordersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $order = Orders::find($id) ;
+        $order->delete() ;
+        return redirect('/orders/')->with('success', 'Order successfully removed');
     }
 }

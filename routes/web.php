@@ -23,6 +23,7 @@ Route::group(['middleware' => ['web']], function(){
 
 	Route::resource("courier", "courierController");
 	Route::resource("truck", "truckController");
+	Route::resource("orders", "ordersController");
 
 });
 
@@ -30,7 +31,9 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/dashboard', 'DashboardController@index')->name('dashboard');
-
 Route::get('/excelcouriers', 'DashboardController@makeExcelCouriers')->name("excelcouriers");
 Route::get('/csvcouriers', 'DashboardController@makeCsvCouriers')->name("csvcouriers");
 Route::get('/pdfcouriers', 'DashboardController@makePdfCouriers')->name("pdfcouriers");
+Route::get('/customers', 'CustomerController@getCustomers')->name("customers");
+Route::delete('/customersRemove/{id}', 'CustomerController@destroy')->name("customersRemove");
+Route::get('/customers/show/{id}', 'CustomerController@show')->name("/customers/show");

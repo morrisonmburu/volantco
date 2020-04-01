@@ -10,6 +10,60 @@
 //vuetify
 @import '~vuetify/dist/vuetify.min.css';
 
+@import '../js/assets/now-ui-kit/variables';
+@import '../js/assets/now-ui-kit/mixins';
+
+// Plugins CSS
+@import "../js/assets/now-ui-kit/plugins/plugin-bootstrap-switch";
+@import "../js/assets/now-ui-kit/plugins/plugin-nouislider";
+@import "../js/assets/now-ui-kit/plugins/plugin-datepicker";
+
+// Core CSS
+@import "../js/assets/now-ui-kit/buttons";
+@import "../js/assets/now-ui-kit/inputs";
+@import "../js/assets/now-ui-kit/checkboxes-radio";
+@import "../js/assets/now-ui-kit/progress";
+@import "../js/assets/now-ui-kit/badges";
+@import "../js/assets/now-ui-kit/pagination";
+@import "../js/assets/now-ui-kit/typography";
+@import "../js/assets/now-ui-kit/misc";
+@import "../js/assets/now-ui-kit/pills";
+
+// components
+@import "../js/assets/now-ui-kit/nucleo-outline";
+
+@import "../js/assets/now-ui-kit/tabs";
+@import "../js/assets/now-ui-kit/navbar";
+@import "../js/assets/now-ui-kit/dropdown";
+@import "../js/assets/now-ui-kit/alerts";
+@import "../js/assets/now-ui-kit/images";
+@import "../js/assets/now-ui-kit/popups";
+@import "../js/assets/now-ui-kit/modals";
+@import "../js/assets/now-ui-kit/carousel";
+@import "../js/assets/now-ui-kit/footers";
+
+// Cards
+@import "../js/assets/now-ui-kit/cards";
+@import "../js/assets/now-ui-kit/cards/card-plain";
+@import "../js/assets/now-ui-kit/cards/card-signup";
+
+// example pages and sections
+@import "../js/assets/now-ui-kit/example-pages";
+@import "../js/assets/now-ui-kit/sections";
+
+
+@import "../js/assets/now-ui-kit/responsive";
+
+// Element UI plugins
+@import "../js/assets/now-ui-kit/element-ui-plugins/carousel";
+@import "../js/assets/now-ui-kit/element-ui-plugins/date_picker";
+@import "../js/assets/now-ui-kit/element-ui-plugins/input";
+@import "../js/assets/now-ui-kit/element-ui-plugins/tooltip";
+@import "../js/assets/now-ui-kit/element-ui-plugins/popover";
+
+@import '../js/assets/demo/demo.css';
+
+
 .navbar-laravel {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);

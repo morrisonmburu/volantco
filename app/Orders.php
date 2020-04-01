@@ -14,7 +14,9 @@ class Orders extends Model
      *
      * @var array
      */
-    // protected $fillable = [
-    //     'to', 'from', 'package', 'info', 'time', 'mark', 'cancel', 'email', 'phone', 'instructions'
-    // ];
+    public $timestamps = false;
+    
+    protected $fillable = [
+        'to', 'from', 'package', 'info', 'time', 'mark', 'cancel', 'email', 'phone', 'instructions'
+    ];
 }
