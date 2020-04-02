@@ -71,7 +71,7 @@
 														</tr>
 														<tr>
 															<td>Price</td>
-															<td>200</td>
+															<td>{{ $order->price }}</td>
 														</tr>
 														<tr>
 															<td>{{$data->email}}</td>

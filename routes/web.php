@@ -15,15 +15,12 @@ Route::get('/volantuser/{opt?}', function () {
  return view('customer.index');
 })->where('opt', '.*');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::group(['middleware' => ['web']], function(){
 
 	Route::resource("courier", "courierController");
 	Route::resource("truck", "truckController");
 	Route::resource("orders", "ordersController");
+	Route::get("/", "pagesController@index");
 
 });
 

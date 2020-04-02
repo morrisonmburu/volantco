@@ -2,7 +2,10 @@
         <script src="{{ mix('js/app.js') }}"></script>
 
 		<script>
-               function myMap() {
+          function myMap() {
+                var directionsService = new google.maps.DirectionsService();
+                var directionsRenderer = new google.maps.DirectionsRenderer();
+
                 var mapProp= {
                   center:new google.maps.LatLng(-1.28333,36.81667),
                   disableDefaultUI: true, 
@@ -33,6 +36,32 @@
 		      
 
                 var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+                directionsRenderer.setMap(mapProp);
+
+                // var onChangeHandler = function() {
+                // calculateAndDisplayRoute(directionsService, directionsRenderer);
+                //   };
+                // document.getElementById('pac-input').addEventListener('change', onChangeHandler);
+                // document.getElementById('pac-input2').addEventListener('change', onChangeHandler);
+                //   }
+
+                //   function calculateAndDisplayRoute(directionsService, directionsRenderer) {
+                //     directionsService.route(
+                //       {
+                //         origin: {query: document.getElementById('pac-input').value},
+                //         destination: {query: document.getElementById('pac-input2').value},
+                //         travelMode: 'DRIVING'
+                //       },
+                //       function(response, status) {
+                //         if (status === 'OK') {
+                //           directionsRenderer.setDirections(response);
+                //         } else {
+                //           window.alert('Directions request failed due to ' + status);
+                //         }
+                //       });
+
+                //   }
 
                 var card = document.getElementById('pac-card');
                 var input = document.getElementById('pac-input');
@@ -152,8 +181,29 @@
                         infowindowContent.children['place-address'].textContent = address;
                         infowindow.open(map, marker2);
 
+                        calculateRoute();
                         calculateDistance();
                       });
+
+                      // map.fitBounds(bounds);
+
+                      function calculateRoute(){
+
+                        var request = {
+                        origin: marker.position,
+                        destination: marker2.position,
+                        travelMode: google.maps.TravelMode.DRIVING
+
+                        };
+                        directionsService.route(request, function (response, status) {
+                            if (status == google.maps.DirectionsStatus.OK) {
+                                directionsRenderer.setDirections(response);
+                                directionsRenderer.setMap(map);
+                            } else {
+                                alert("Directions Request from " + start.toUrlValue(6) + " to " + end.toUrlValue(6) + " failed: " + status);
+                            }
+                        });
+                      }
 
                       // Sets a listener on a radio button to change the filter type on Places
                       // Autocomplete.

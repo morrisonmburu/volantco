@@ -63,7 +63,7 @@
 											{{$order->from}}
 										</td>
 										<td>
-											200
+											{{ $order->price }}
 										</td>
 										<td>
 											{{$order->package}}

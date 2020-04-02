@@ -1,31 +1,141 @@
-<template>
-	<v-container>
-		<v-card>
- 		<v-card-title>
- 					Order Details
- 					<v-spacer></v-spacer>
- 				</v-card-title>
- 				<v-data-table
- 				:headers="headers"
- 				:items="orders"
+<style type="text/css">
+	.mobile {
+      color: #333;
+    }
 
- 				>
- 				<template v-slot:item="props">
- 					<tr>
- 						<td>{{ props.item.to }}</td>
- 						<td>{{ props.item.from }}</td>
- 						<td>{{ props.item.package }}</td>
- 						<td>{{ props.item.time }}</td>
- 						<td>{{ props.item.instructions }}</td>
- 						<td>
- 							<v-btn class="mx-2" fab dark small color="red" @click="">
- 								<v-icon>delete</v-icon>
- 							</v-btn>
- 						</td>
- 					</tr>
- 				</template>
- 			</v-data-table>
- 		</v-card>
+    @media screen and (max-width: 768px) {
+      .mobile table.v-table tr {
+        max-width: 100%;
+        position: relative;
+        display: block;
+      }
+
+      .mobile table.v-table tr:nth-child(odd) {
+        border-left: 6px solid deeppink;
+      }
+
+      .mobile table.v-table tr:nth-child(even) {
+        border-left: 6px solid cyan;
+      }
+
+      .mobile table.v-table tr td {
+        display: flex;
+        width: 100%;
+        border-bottom: 1px solid #f5f5f5;
+        height: auto;
+        padding: 10px;
+      }
+
+      .mobile table.v-table tr td ul li:before {
+        content: attr(data-label);
+        padding-right: .5em;
+        text-align: left;
+        display: block;
+        color: #999;
+
+      }
+      .v-datatable__actions__select
+      {
+        width: 50%;
+        margin: 0px;
+        justify-content: flex-start;
+      }
+      .mobile .theme--light.v-table tbody tr:hover:not(.v-datatable__expand-row) {
+        background: transparent;
+      }
+
+    }
+    .flex-content {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .flex-item {
+      padding: 5px;
+      width: 50%;
+      height: 80px;
+      font-weight: bold;
+    }
+</style>
+<template>
+	<v-container
+		fluid
+        fill-height>
+     
+        		<!-- <v-card width="" class="elevation-12 d-inline-block mx-sm-auto">
+			 		<v-card-title>
+			 					Order Details
+			 					<v-spacer></v-spacer>
+			 				</v-card-title>
+			 				<v-card-body>
+			 				<v-data-table
+			 				:headers="headers"
+			 				:items="orders"
+			 				>
+			 				<template v-slot:item="props">
+			 					<tr>
+			 						<td>{{ props.item.to }}</td>
+			 						<td>{{ props.item.from }}</td>
+			 						<td>{{ props.item.package }}</td>
+			 						<td>{{ props.item.time }}</td>
+			 						<td>{{ props.item.price }}</td>
+			 						<td>
+			 							<v-btn class="mx-2" fab dark small color="red" @click="delete(props.item.id)">
+			 								<v-icon>delete</v-icon>
+			 							</v-btn>
+			 						</td>
+			 					</tr>
+			 				</template>
+			 			</v-data-table>
+			 		</v-card-body>
+			 		</v-card> -->
+
+			     <v-toolbar dark color="primary" fixed>
+        <v-toolbar-title class="white--text">Nutrition</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+        <v-menu offset-y :nudge-left="170" :close-on-content-click="false">
+            <v-btn icon>
+                <v-icon>more_vert</v-icon>
+              </v-btn>
+            <v-list>
+              <v-list-tile  v-for="(item, index) in headers"  :key="item.value"   @click="changeSort(item.value)">
+                <v-list-tile-title>Text<v-icon v-if="pagination.sortBy === item.value">{{pagination.descending ? 'arrow_downward':'arrow_upward'}}</v-icon></v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+          </v-menu>
+      </v-toolbar>
+          <v-layout v-resize="onResize" column style="padding-top:56px">
+            <v-data-table :headers="headers" :items="orders" :search="search" :hide-default-header="isMobile" :class="{mobile: isMobile}">
+              <template v-slot:item="props">
+                <tr v-if="!isMobile">
+                  <td class="text-xs-right">{{ props.item.to }}</td>
+                  <td class="text-xs-right">{{ props.item.from }}</td>
+                  <td class="text-xs-right">{{ props.item.package }}</td>
+                  <td class="text-xs-right">{{ props.item.time }}</td>
+                  <td class="text-xs-right">{{ props.item.price }}</td>
+                </tr>
+                <tr v-else>
+                  <td>
+                    <ul class="flex-content">
+                      <li class="flex-item" data-label="to">{{ props.item.to }}</li>
+                      <li class="flex-item" data-label="from">{{ props.item.from }}</li>
+                      <li class="flex-item" data-label="package">{{ props.item.package }}</li>
+                      <li class="flex-item" data-label="time">{{ props.item.time }}</li>
+                      <li class="flex-item" data-label="price">{{ props.item.price }}</li>
+                    </ul>
+                  </td>
+                </tr>
+              </template>
+              <v-alert slot="no-results" :value="true" color="error" icon="warning">
+                Your search for {{ search }} found no results.
+              </v-alert>
+            </v-data-table>
+        </v-layout>
 	</v-container>
 </template>
 
@@ -45,9 +155,15 @@
 				{text: 'from', value: "from"},
 				{text: 'package', value: "package"},
 				{text: 'Time of Delivery', value: "time"},
-				{text: 'instructions', value: "instructions"},
+				{text: 'Price', value: "price"},
 				{text: 'action'},
 				],
+				pagination: {
+		          sortBy: 'name'
+		        },
+		        selected: [],
+		        search: '',
+		        isMobile: false,
 			}
 		},
 		beforeMount() {
@@ -59,5 +175,38 @@
 
 	        axios.get(`/api/getorders`).then(response => this.orders = response.data)
 	    },
+	    methods: {
+	    	delete: function(id){
+	    		axios.defaults.headers.common['Content-Type'] = 'application/json'
+				axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('volant.jwt')
+
+				axios.post(`/api/deleteOrder`,{id}).then(
+					response => {
+						let data = response.data
+						console.log(data)
+						// this.success = true
+						this.$router.push('orders')
+					})
+	    	},
+	    	onResize() {
+	          if (window.innerWidth < 769)
+	            this.isMobile = true;
+	          else
+	            this.isMobile = false;
+	        },
+	        toggleAll() {
+	          if (this.selected.length) this.selected = []
+	          else this.selected = this.orders.slice()
+	        },
+	        changeSort(column) {
+	          console.log(column);
+	          if (this.pagination.sortBy === column) {
+	            this.pagination.descending = !this.pagination.descending
+	          } else {
+	            this.pagination.sortBy = column
+	            this.pagination.descending = false
+	          }
+	        }
+	    }
 	}
 </script>

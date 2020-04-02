@@ -148,7 +148,17 @@
 					justify-center
 					>
 					{{ successMessage }}
-				</v-alert>     
+				</v-alert>
+		
+					<v-progress-circular
+				      :size="50"
+				      color="primary"
+				      indeterminate
+				      style="margin-left:200px; margin-top:100px; margin-bottom:100px;"
+				      v-if="loader"
+				    >
+				    <p style="padding-top:100px;">Saving Order ...</p>
+				    </v-progress-circular>     
 
         			<form-wizard 
         				@on-complete="onComplete"
@@ -157,6 +167,7 @@
         				color="blue"
         				error-color="#a94442"
         				class="mx-sm-auto"
+        				v-if="!loader"
         				>
         				<tab-content icon="ti-location-pin" title="Enter Locations" :before-change="validateLocation">
 
@@ -448,6 +459,20 @@ flat
 			prepend-icon="calendar_today"
 			> 
 		</v-datetime-picker>
+
+		<v-radio-group v-model="payment">
+	       <v-radio
+              label="Pay With Mpesa"
+              color="green"
+              value="mpesa"
+            ></v-radio>
+            <v-radio
+              label="Pay On Delivery"
+              color="blue"
+              value="delivery"
+            ></v-radio>
+	    </v-radio-group>
+
 </v-form>
 </tab-content>
 </form-wizard>
@@ -498,6 +523,7 @@ export default{
 		truck: false,
 		value: '',
 		price: '',
+		payment: '',
 		ton1: false,
 		ton2: false,
 		ton3: false,
@@ -507,6 +533,7 @@ export default{
 		alertMessage: '',
 		success: false,
 		successMessage: '',
+		loader: false,
 		items: [
 		{text: 'Small', img: '/images/gift.png'},
 		{text: 'Medium', img: '/images/logistics.png'},
@@ -581,22 +608,33 @@ export default{
 			},
 			onComplete: function(){
 
+				axios.defaults.headers.common['Content-Type'] = 'application/json'
+				axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('volant.jwt')
+
 				let to = this.to
 				let from = this.from
 				let packages = this.value
-				let info = this.info
+				let price = this.price
+				let instructions = this.info
 				let datetime = this.datetime
 				let user = JSON.parse(localStorage.getItem('volant.user'))
 				let email = user.email
 				let phone = user.phone
+				let payment = this.payment
 
 				this.successMessage = 'You have successfully made an order'
 
-				axios.post('/api/storeorders', {to, from, packages, info, datetime, email, phone}).then(response => {
+				this.loader = true
+
+				axios.post('/api/storeorders', {to, from, packages, price, datetime, email, phone, instructions, payment}).then(response => {
 					let data = response.data
 
-					this.success = true
-					this.$router.push('orders')
+					this.loader = false
+
+					this.$swal('Volant Order','You successfully made an order', 'success').then((result) => {
+			          	this.$router.push('orders')
+			          })
+
 				}
 				)
 			},
