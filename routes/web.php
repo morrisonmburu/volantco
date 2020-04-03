@@ -33,4 +33,6 @@ Route::get('/csvcouriers', 'DashboardController@makeCsvCouriers')->name("csvcour
 Route::get('/pdfcouriers', 'DashboardController@makePdfCouriers')->name("pdfcouriers");
 Route::get('/customers', 'CustomerController@getCustomers')->name("customers");
 Route::delete('/customersRemove/{id}', 'CustomerController@destroy')->name("customersRemove");
-Route::get('/customers/show/{id}', 'CustomerController@show')->name("/customers/show");
+Route::get('/customers/show/{id}', 'CustomerController@show')->name("customers.show");
+Route::post('/orders/complete', 'ordersController@complete')->name("orders.complete");
+Route::post('/orders/cancel', 'ordersController@cancel')->name("orders.cancel");

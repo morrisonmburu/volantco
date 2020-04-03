@@ -62,40 +62,31 @@
     }
 </style>
 <template>
-	<v-container
-		fluid
-        fill-height>
-     
-        		<!-- <v-card width="" class="elevation-12 d-inline-block mx-sm-auto">
-			 		<v-card-title>
-			 					Order Details
-			 					<v-spacer></v-spacer>
-			 				</v-card-title>
-			 				<v-card-body>
-			 				<v-data-table
-			 				:headers="headers"
-			 				:items="orders"
-			 				>
-			 				<template v-slot:item="props">
-			 					<tr>
-			 						<td>{{ props.item.to }}</td>
-			 						<td>{{ props.item.from }}</td>
-			 						<td>{{ props.item.package }}</td>
-			 						<td>{{ props.item.time }}</td>
-			 						<td>{{ props.item.price }}</td>
-			 						<td>
-			 							<v-btn class="mx-2" fab dark small color="red" @click="delete(props.item.id)">
-			 								<v-icon>delete</v-icon>
-			 							</v-btn>
-			 						</td>
-			 					</tr>
-			 				</template>
-			 			</v-data-table>
-			 		</v-card-body>
-			 		</v-card> -->
+	<v-container fluid fill-height>
+		<v-tabs
+		v-model="tab"
+		background-color="transparent"
+      	color="basil"
+      	grow
+		>
+			<v-tab>
+		       In Transit
+		     </v-tab>
 
-			     <v-toolbar dark color="primary" fixed>
-        <v-toolbar-title class="white--text">Nutrition</v-toolbar-title>
+		     <v-tab>
+		       Completed
+		     </v-tab>
+
+		     <v-tab>
+		       Cancelled
+		     </v-tab>
+
+		</v-tabs>
+
+		<v-spacer></v-spacer>
+
+	<v-toolbar dark color="primary" fixed>
+        <v-toolbar-title class="white--text">Orders</v-toolbar-title>
         <v-spacer></v-spacer>
         <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
         <v-menu offset-y :nudge-left="170" :close-on-content-click="false">
@@ -109,32 +100,141 @@
             </v-list>
           </v-menu>
       </v-toolbar>
+
           <v-layout v-resize="onResize" column style="padding-top:56px">
-            <v-data-table :headers="headers" :items="orders" :search="search" :hide-default-header="isMobile" :class="{mobile: isMobile}">
-              <template v-slot:item="props">
-                <tr v-if="!isMobile">
-                  <td class="text-xs-right">{{ props.item.to }}</td>
-                  <td class="text-xs-right">{{ props.item.from }}</td>
-                  <td class="text-xs-right">{{ props.item.package }}</td>
-                  <td class="text-xs-right">{{ props.item.time }}</td>
-                  <td class="text-xs-right">{{ props.item.price }}</td>
-                </tr>
-                <tr v-else>
-                  <td>
-                    <ul class="flex-content">
-                      <li class="flex-item" data-label="to">{{ props.item.to }}</li>
-                      <li class="flex-item" data-label="from">{{ props.item.from }}</li>
-                      <li class="flex-item" data-label="package">{{ props.item.package }}</li>
-                      <li class="flex-item" data-label="time">{{ props.item.time }}</li>
-                      <li class="flex-item" data-label="price">{{ props.item.price }}</li>
-                    </ul>
-                  </td>
-                </tr>
-              </template>
-              <v-alert slot="no-results" :value="true" color="error" icon="warning">
-                Your search for {{ search }} found no results.
-              </v-alert>
-            </v-data-table>
+
+	          	<v-alert
+					:value="success"
+					dismissible
+					transition="scale-transition"
+					text
+					prominent
+					outlined
+					type="success"
+					class="mx-sm-auto"
+					width="350px"
+					@input="close"
+					align-center
+					style="margin-bottom:"
+					justfy-center
+					>
+					{{ successMessage }}
+				</v-alert>
+				<v-spacer></v-spacer>
+
+				<v-tabs-items v-model="tab">
+			      <v-tab-item>
+			      	<v-data-table :headers="headers" :items="orders" :search="search" :hide-default-header="isMobile" :class="{mobile: isMobile}">
+		              <template v-slot:item="props">
+		                <tr v-if="!isMobile && props.item.mark === 0 && props.item.cancel === 0">
+		                  <td class="text-xs-right">{{ props.item.to }}</td>
+		                  <td class="text-xs-right">{{ props.item.from }}</td>
+		                  <td class="text-xs-right">{{ props.item.package }}</td>
+		                  <td class="text-xs-right">{{ props.item.time }}</td>
+		                  <td class="text-xs-right">{{ props.item.price }}</td>
+		                  <td>
+		                  	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
+		                  		<v-icon>delete</v-icon>
+		                  	</v-btn>
+		                  </td>
+		                </tr>
+		                <tr v-else-if="isMobile && props.item.mark === 0 && props.item.cancel === 0">
+		                  <td>
+		                    <ul class="flex-content">
+		                      <li class="flex-item" data-label="to">{{ props.item.to }}</li>
+		                      <li class="flex-item" data-label="from">{{ props.item.from }}</li>
+		                      <li class="flex-item" data-label="package">{{ props.item.package }}</li>
+		                      <li class="flex-item" data-label="time">{{ props.item.time }}</li>
+		                      <li class="flex-item" data-label="price">{{ props.item.price }}</li>
+		                      <li class="flex-item" data-label="id">
+		                      	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
+		                  		<v-icon>delete</v-icon>
+		                  	</v-btn>
+		                      </li>
+		                    </ul>
+		                  </td>
+		                </tr>
+		              </template>
+		              <v-alert slot="no-results" :value="true" color="error" icon="warning">
+		                Your search for {{ search }} found no results.
+		              </v-alert>
+		            </v-data-table>
+			      </v-tab-item>
+			      <v-tab-item>
+			      	<v-data-table :headers="headers" :items="orders" :search="search" :hide-default-header="isMobile" :class="{mobile: isMobile}">
+		              <template v-slot:item="props">
+		                <tr v-if="!isMobile && props.item.mark === 1 && props.item.cancel === 0">
+		                  <td class="text-xs-right">{{ props.item.to }}</td>
+		                  <td class="text-xs-right">{{ props.item.from }}</td>
+		                  <td class="text-xs-right">{{ props.item.package }}</td>
+		                  <td class="text-xs-right">{{ props.item.time }}</td>
+		                  <td class="text-xs-right">{{ props.item.price }}</td>
+		                  <td>
+		                  	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
+		                  		<v-icon>delete</v-icon>
+		                  	</v-btn>
+		                  </td>
+		                </tr>
+		                <tr v-else-if="isMobile && props.item.mark === 1 && props.item.cancel === 0">
+		                  <td>
+		                    <ul class="flex-content">
+		                      <li class="flex-item" data-label="to">{{ props.item.to }}</li>
+		                      <li class="flex-item" data-label="from">{{ props.item.from }}</li>
+		                      <li class="flex-item" data-label="package">{{ props.item.package }}</li>
+		                      <li class="flex-item" data-label="time">{{ props.item.time }}</li>
+		                      <li class="flex-item" data-label="price">{{ props.item.price }}</li>
+		                      <li class="flex-item" data-label="id">
+		                      	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
+		                  		<v-icon>delete</v-icon>
+		                  	</v-btn>
+		                      </li>
+		                    </ul>
+		                  </td>
+		                </tr>
+		              </template>
+		              <v-alert slot="no-results" :value="true" color="error" icon="warning">
+		                Your search for {{ search }} found no results.
+		              </v-alert>
+		            </v-data-table>
+			      </v-tab-item>
+			      <v-tab-item>
+			      	<v-data-table :headers="headers" :items="orders" :search="search" :hide-default-header="isMobile" :class="{mobile: isMobile}">
+		              <template v-slot:item="props">
+		                <tr v-if="!isMobile && props.item.mark === 0 && props.item.cancel === 1">
+		                  <td class="text-xs-right">{{ props.item.to }}</td>
+		                  <td class="text-xs-right">{{ props.item.from }}</td>
+		                  <td class="text-xs-right">{{ props.item.package }}</td>
+		                  <td class="text-xs-right">{{ props.item.time }}</td>
+		                  <td class="text-xs-right">{{ props.item.price }}</td>
+		                  <td>
+		                  	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
+		                  		<v-icon>delete</v-icon>
+		                  	</v-btn>
+		                  </td>
+		                </tr>
+		                <tr v-else-if="isMobile && props.item.mark === 0 && props.item.cancel === 1">
+		                  <td>
+		                    <ul class="flex-content">
+		                      <li class="flex-item" data-label="to">{{ props.item.to }}</li>
+		                      <li class="flex-item" data-label="from">{{ props.item.from }}</li>
+		                      <li class="flex-item" data-label="package">{{ props.item.package }}</li>
+		                      <li class="flex-item" data-label="time">{{ props.item.time }}</li>
+		                      <li class="flex-item" data-label="price">{{ props.item.price }}</li>
+		                      <li class="flex-item" data-label="id">
+		                      	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
+		                  		<v-icon>delete</v-icon>
+		                  	</v-btn>
+		                      </li>
+		                    </ul>
+		                  </td>
+		                </tr>
+		              </template>
+		              <v-alert slot="no-results" :value="true" color="error" icon="warning">
+		                Your search for {{ search }} found no results.
+		              </v-alert>
+		            </v-data-table>
+			      </v-tab-item>
+			    </v-tabs-items>
         </v-layout>
 	</v-container>
 </template>
@@ -164,28 +264,41 @@
 		        selected: [],
 		        search: '',
 		        isMobile: false,
+		        successMessage: '',
+		        success: false,
+		        tab: null,
 			}
 		},
 		beforeMount() {
 
 			this.user = JSON.parse(localStorage.getItem('volant.user'))
+			let user_id = this.user.id
 
 			axios.defaults.headers.common['Content-Type'] = 'application/json'
 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('volant.jwt')
 
-	        axios.get(`/api/getorders`).then(response => this.orders = response.data)
+	        axios.post(`/api/getorders`, {user_id}).then(response => {
+	        	let data = []
+	        	console.log(response.data)
+	        	data = response.data.constructor
+	        	if(data.length != 1){
+	        		this.orders = response.data
+	        	}
+
+	        })
 	    },
 	    methods: {
-	    	delete: function(id){
+	    	remove(id, index) {
 	    		axios.defaults.headers.common['Content-Type'] = 'application/json'
 				axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('volant.jwt')
 
 				axios.post(`/api/deleteOrder`,{id}).then(
 					response => {
-						let data = response.data
-						console.log(data)
-						// this.success = true
-						this.$router.push('orders')
+						let data = response.data.order
+						this.orders.splice(index, 1)
+						this.success = true
+						this.successMessage = 'Order'+data.id+' Has been successfully deleted'
+						// this.$router.push('orders')
 					})
 	    	},
 	    	onResize() {
@@ -206,7 +319,10 @@
 	            this.pagination.sortBy = column
 	            this.pagination.descending = false
 	          }
-	        }
+	        },
+	        close (v) {
+				this.alert = v
+			}
 	    }
 	}
 </script>

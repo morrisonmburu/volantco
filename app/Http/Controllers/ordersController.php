@@ -8,6 +8,7 @@ use App\Orders;
 use App\Payments;
 use App\User;
 use Notification;
+use App\Volantuser;
 use App\Notifications\mailNotification;
 use App\Mail\sendMail;
 use Illuminate\Support\Facades\Mail;
@@ -25,8 +26,10 @@ class ordersController extends Controller
         return view("dashboard.orders")->withData($data);
     }
 
-    public function allOrders(){
-        return response()->json(Orders::all(),200);
+    public function allOrders(Request $request){
+        $id = $request->user_id;
+        $user = Volantuser::find($id);
+        return response()->json(Orders::where("email","=",$user->email)->get(),200);
     }
 
     /**
@@ -248,11 +251,30 @@ class ordersController extends Controller
         $id = $request->id;
         $order = Orders::find($id);
 
-        // $order->delete();
+        $order->delete();
 
         return response()->json([
                 'order' => $order,
                 'token' => $order->createToken('orderToken')->accessToken,
             ]);
+    }
+
+    public function complete(Request $request)
+    {
+        $id = $request->id;
+        $mark = $request->mark;
+        $order = Orders::find($id);
+        $order->mark = $mark;
+        $order->save();
+        return $order->id;
+    }
+
+    public function cancel(Request $request)
+    {
+        $id = $request->id;
+        $order = Orders::find($id);
+        $order->cancel = 1;
+        $order->save();
+        return $order->id;
     }
 }

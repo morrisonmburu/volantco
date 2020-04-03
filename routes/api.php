@@ -17,7 +17,7 @@ Route::post('login', 'CustomerController@login');
 Route::post('register', 'CustomerController@register');
 
 Route::group(['middleware' => 'auth:volantuser-api'], function(){
-	Route::get('/getorders', 'ordersController@allOrders');
+	Route::post('/getorders', 'ordersController@allOrders');
 	Route::post('/deleteOrder', 'ordersController@deleteOrder');
 	Route::post('/storeorders', 'ordersController@store');
 });

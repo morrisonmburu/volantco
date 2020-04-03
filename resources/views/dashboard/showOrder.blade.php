@@ -71,7 +71,7 @@
 														</tr>
 														<tr>
 															<td>Price</td>
-															<td>{{ $order->price }}</td>
+															<td>{{ $data->price }}</td>
 														</tr>
 														<tr>
 															<td>{{$data->email}}</td>
@@ -99,6 +99,14 @@
 								</div>
 								<div class="panel-footer">
 									<!--                        <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>-->
+									
+									<span class="pull-left" style="padding: 10px;">
+										<button class="btn btn-info" onclick="complete({{ $data->id }})">Complete</button>
+									</span>
+									<span class="pull-left" style="padding: 10px;">
+										<button title="cancel order" class="btn btn-danger" onclick="cancel({{ $data->id }})"data-original-title="Remove this user" data-toggle="tooltip"><i class="glyphicon glyphicon-remove"></i>Cancel</button>
+									</span>
+									
 									<span class="pull-right">
 										<a title="Delete" href="/orders/{{$data->id}}/destroy" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;
 									</span>
@@ -120,6 +128,65 @@
 
 </div>
 <!-- /page container -->
+
+<script type="text/javascript">
+	function complete(id){
+		var mark = 1;
+		var id = id;
+
+		jQuery.ajax({
+			url:'{{ route('orders.complete') }}',
+			method:"POST",
+			data:{mark: mark, id: id, _token: '{{csrf_token()}}'},
+			success:function(result)
+			{
+				swal('Order'+result, "has been completed successfully!", "success").then(function(){ 
+					window.location = "http://127.0.0.1:8000/orders"
+				}
+				);
+			},
+			error : function(){alert("Something Went Wrong.");},
+		});
+	}
+</script>
+
+<script>
+	function cancel(id){
+		var id = id;
+
+		swal({
+			title: "Are you sure?",
+			text: "Once canceled, you will not be able to uncancel this order!",
+			icon: "warning",
+			buttons: true,
+			dangerMode: true,
+		})
+		.then((willDelete) => {
+			if (willDelete) {
+				jQuery.ajax({
+					url:'{{ route('orders.cancel') }}',
+					method:"POST",
+					data:{id: id, _token: '{{csrf_token()}}'},
+					success:function(result)
+					{
+						swal('Order'+result, "has been canceled!", {
+							icon: "success",
+						}).then(function(){ 
+							window.location = "http://127.0.0.1:8000/orders"
+						}
+						);
+					},
+					error : function(){alert("Something Went Wrong.");},
+				});
+			} else {
+				swal("Order is safe!").then(function(){ 
+					window.location = "http://127.0.0.1:8000/orders"
+				}
+				);
+			}
+		});
+	}
+</script>
 
 </body>
 </html>
