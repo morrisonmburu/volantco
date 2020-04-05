@@ -89,6 +89,18 @@
 															<td>Instructions</td>
 															<td>{{$data->instructions}}</td>
 														</tr>
+														<tr>
+															<td>Status</td>
+															<td>
+																@if($data->mark == 0 && $data->cancel == 0)
+																<span class="bg bg-warning">In transit</span>
+																@elseif($data->mark == 1 && $data->cancel == 0)
+																<span class="bg bg-warning">Completed</span>
+																@else
+																<span class="bg bg-warning">Cancelled</span>
+																@endif
+															</td>
+														</tr>
 
 													</tr>
 
@@ -105,6 +117,10 @@
 									</span>
 									<span class="pull-left" style="padding: 10px;">
 										<button title="cancel order" class="btn btn-danger" onclick="cancel({{ $data->id }})"data-original-title="Remove this user" data-toggle="tooltip"><i class="glyphicon glyphicon-remove"></i>Cancel</button>
+									</span>
+
+									<span class="pull-left" style="padding: 10px;">
+										<a href="/orders/{{$data->id}}/dispatch" title="dispatch order" class="btn btn-warning" data-original-title="Remove this user" data-toggle="tooltip"><i class="fa fa-truck"></i>Dispatch</a>
 									</span>
 									
 									<span class="pull-right">

@@ -146,7 +146,7 @@
 								<li>
 									<a href="/orders"><i style="font-size: 20px; padding-left: 4px; padding-right: 5px;" class="hvr-buzz-out fa fa-fw glyphicon glyphicon-paste fa-2x"></i> <span>Orders</span></a></li>
 									<li>
-									<a href="#"><i style="font-size: 20px; padding-left: 4px; padding-right: 5px;" class="hvr-buzz-out fa fa-fw glyphicon glyphicon-paste fa-2x"></i> <span>dispatch</span></a></li>
+									<a href="/dispatch/"><i style="font-size: 20px; padding-left: 4px; padding-right: 5px;" class="hvr-buzz-out fa fa-fw glyphicon glyphicon-paste fa-2x"></i> <span>dispatch</span></a></li>
 									<li>
 									<a href="/courier"><i class="hvr-buzz-out fa fa-user-plus fa-2x"></i> <span>Couriers</span></a></li>
 									<li>

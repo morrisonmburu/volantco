@@ -26,6 +26,7 @@ class CreateOrdersTable extends Migration
             $table->integer('cancel')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
+            $table->integer('user_id');
             $table->string('instructions')->nullable();
         });
     }

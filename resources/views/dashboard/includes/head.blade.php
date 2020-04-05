@@ -49,6 +49,7 @@
 	<script type="text/javascript" src="{{url('assets/js/pages/picker_date.js')}}"></script>
 		<script type="text/javascript" src="{{url('assets/js/pages/datatables_basic.js')}}"></script>
 	<script type="text/javascript" src="{{url('assets/js/pages/datatables_advanced.js')}}"></script>
+
 	<script type="text/javascript" src="{{url('assets/js/pages/dashboard.js')}}"></script>
 	<!-- /theme JS files -->
 

@@ -21,6 +21,7 @@ Route::group(['middleware' => ['web']], function(){
 	Route::resource("truck", "truckController");
 	Route::resource("orders", "ordersController");
 	Route::get("/", "pagesController@index");
+	Route::resource("dispatch", 'dispatchController');
 
 });
 
@@ -36,3 +37,4 @@ Route::delete('/customersRemove/{id}', 'CustomerController@destroy')->name("cust
 Route::get('/customers/show/{id}', 'CustomerController@show')->name("customers.show");
 Route::post('/orders/complete', 'ordersController@complete')->name("orders.complete");
 Route::post('/orders/cancel', 'ordersController@cancel')->name("orders.cancel");
+Route::get('/orders/{id}/dispatch', 'ordersController@dispatch')->name("orders.dispatch");

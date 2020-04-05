@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Volantuser;
 use Validator;
 use Auth;
-
+use Illuminate\Support\Facades\Hash;
 
 class CustomerController extends Controller
 {
@@ -67,5 +67,68 @@ class CustomerController extends Controller
     public function show($id){
         $data = Volantuser::find($id);
         return view("dashboard.showCustomer")->withData($data);
+    }
+
+    public function getUser(Request $request){
+        $id = $request->user_id;
+        return response()->json(Volantuser::find($id),200);
+    }
+
+    public function editInfo(Request $request){
+        $validator = Validator::make($request->all(), [
+                'name' => 'required|max:50',
+                'email' => 'required|email',
+                'phone' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 401);
+            }
+
+            $id = $request->user_id;
+            $user = Volantuser::find($id);
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->phone = $request->phone;
+
+            $user->save();
+
+            $user->is_admin = 0;
+
+            return response()->json([
+                'user' => $user,
+                'token' => $user->createToken('usertoken')->accessToken,
+            ]);
+    }
+
+    public function changePassword(Request $request){
+         $validator = Validator::make($request->all(), [
+                'oldpassword' => 'required|min:6',
+                'password' => 'required|min:6',
+                'c_password' => 'required|same:password',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 401);
+            }
+
+            $id = $request->user_id;
+            $user = Volantuser::find($id);
+
+            if(Hash::check($request->oldpassword, $user->password)){
+                $user->password = bcrypt($request->password);
+
+                $user->save();
+
+                $user->is_admin = 0;
+
+                return response()->json([
+                    'user' => $user,
+                    'token' => $user->createToken('usertoken')->accessToken,
+                ]);
+            }else{
+                return "error";
+            }
     }
 }

@@ -12,6 +12,7 @@
 
 #map #infowindow-content {
 	display: inline;
+	
 }
 
       /*.pac-card {
@@ -557,8 +558,15 @@ export default{
 		],
 	}),
 
-	mounted(){
+	mounted() {
 
+		let maps = document.createElement('script');    
+		maps.setAttribute('src',"/js/maps.js");
+		document.head.appendChild(maps)
+
+		let mapsApi = document.createElement('script');    
+		mapsApi.setAttribute('src',"https://maps.googleapis.com/maps/api/js?libraries=places&language=en&key=AIzaSyC_WPxndykde_MAUC_5FKnXPp035kJw5nI&callback=myMap");
+		document.head.appendChild(mapsApi);
 	},
 
 	methods: {
@@ -621,12 +629,13 @@ export default{
 				let email = user.email
 				let phone = user.phone
 				let payment = this.payment
+				let user_id = user.id
 
 				this.successMessage = 'You have successfully made an order'
 
 				this.loader = true
 
-				axios.post('/api/storeorders', {to, from, packages, price, datetime, email, phone, instructions, payment}).then(response => {
+				axios.post('/api/storeorders', {user_id, to, from, packages, price, datetime, email, phone, instructions, payment}).then(response => {
 					let data = response.data
 
 					this.loader = false

@@ -12,6 +12,8 @@ use App\Volantuser;
 use App\Notifications\mailNotification;
 use App\Mail\sendMail;
 use Illuminate\Support\Facades\Mail;
+use App\Couriers;
+use App\Trucks;
 
 class ordersController extends Controller
 {
@@ -146,6 +148,8 @@ class ordersController extends Controller
         // $pay->CustomerMessage = $data->CustomerMessage;
         // $pay->ResultDesc = '';
 
+        // dd($request);
+
         $order = new Orders;
 
         $order->to = $request->to;
@@ -159,6 +163,7 @@ class ordersController extends Controller
         $order->email = $request->email;
         $order->phone = $request->phone;
         $order->instructions = $request->instructions;
+        $order->user_id = $request->user_id;
 
         Mail::to($request->email)->send(new sendMail($order->package, $order->time, $order->price, $order->instructions, $order->to, $order->from, $order->time));
 
@@ -217,7 +222,11 @@ class ordersController extends Controller
     public function dispatch($id)
     {
         $data = Orders::find($id);
-        return view("dashboard.dispatch")->withData($data);
+        $user_id = $data->user_id;
+        $volantuser = Volantuser::find($user_id);
+        $driver = Couriers::all();
+        $trucks = Trucks::all();
+        return view("dashboard.dispatch")->withData($data)->withVolantuser($volantuser)->withDriver($driver)->withTrucks($trucks)->withId($id);
     }
 
     /**

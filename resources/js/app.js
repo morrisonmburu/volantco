@@ -3,15 +3,6 @@ import Vue from 'vue'
     import Vuetify from 'vuetify'
     import VueTelInput from 'vue-tel-input'
 
-    import * as VueGoogleMaps from "vue2-google-maps";
-
-    Vue.use(VueGoogleMaps, {
-        load: {
-            key: "AIzaSyC_WPxndykde_MAUC_5FKnXPp035kJw5nI",
-            libraries: "places"
-        }
-    })
-
     import VueFormWizard from 'vue-form-wizard'
     import 'vue-form-wizard/dist/vue-form-wizard.min.css'
     //local registration
@@ -67,6 +58,7 @@ import Vue from 'vue'
     import Login from './views/Login'
     import Register from './views/Register'
     import Orders from './views/Orders'
+    import Profile from './views/Profile'
     // import UserBoard from './views/UserBoard'
     
     Vue.component('pagination', require('laravel-vue-pagination'));
@@ -97,6 +89,15 @@ import Vue from 'vue'
                 path: '/volantuser/orders',
                 name: 'orders',
                 component: Orders,
+                meta: {
+                    requiresAuth: true,
+                    is_user: true
+                }
+            },
+            {
+                path: '/volantuser/editProfile',
+                name: 'editProfile',
+                component: Profile,
                 meta: {
                     requiresAuth: true,
                     is_user: true

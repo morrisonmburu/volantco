@@ -13,33 +13,17 @@ class CreateDispatchTable extends Migration
      */
     public function up()
     {
-        Schema::create('dispatch', function (Blueprint $table) {
+        Schema::create('dispatches', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('LoadNo')->unique();
+            $table->bigInteger('dispatchno')->unique();
+            $table->integer('orderNo');
             $table->string('customerName')->nullable($value = false);
-            $table->string('driverName')->nullable($value = false);
+            $table->string('courierName')->nullable($value = false);
             $table->string('truckNo')->nullable($value = false);
             $table->string('from')->nullable($value = false);
             $table->string('to')->nullable($value = false);
-            $table->string('shipper')->nullable($value = false);
             $table->string('pickup')->nullable($value = false);
-            // $table->string('bol')->nullable($value = false)->default('N/A') ;
-            $table->string('customerInfo')->nullable($value = false)->default('N/A');
-            $table->bigInteger('weight')->unsigned()->default(0);
-            $table->bigInteger('quantity')->unsigned()->default(0);
-            $table->string('unit')->nullable($value = false) ;
-            $table->mediumText('comments');
-            $table->string('deliveryDate')->nullable($value = false);
-            $table->bigInteger('primaryFee')->nullable($value = false)->default(0);
-            $table->string('primaryFeeType')->nullable($value = false)->default(0);
-            // $table->bigInteger('fscAmount')->nullable($value = false)->default(0);
-            // $table->string('fscAmountType')->nullable($value = false)->default(0) ;
-            // $table->bigInteger('additional')->nullable($value = false)->default(0) ;
-            // $table->bigInteger('detention')->nullable($value = false)->default(0) ;
-            // $table->bigInteger('lumper')->nullable($value = false)->default(0) ;
-            // $table->bigInteger('topoff')->nullable($value = false)->default(0) ;
-            // $table->bigInteger('tarp')->nullable($value = false)->default(0) ;
-            // $table->bigInteger('invoiceAdvance')->nullable($value = false)->default(0);
+            $table->string('amount');
             $table->timestamps();
         });
     }
@@ -51,6 +35,6 @@ class CreateDispatchTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('dispatch');
+        Schema::dropIfExists('dispatches');
     }
 }

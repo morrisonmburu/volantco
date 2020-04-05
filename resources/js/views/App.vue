@@ -17,7 +17,7 @@
       <v-list dense>
           <v-list-item
             
-            @click="dashboard" 
+            @click="navigate('home')" 
           >
             <v-list-item-action>
               <v-icon>dashboard</v-icon>
@@ -37,6 +37,19 @@
             <v-list-item-content>
               <v-list-item-title>
                 Orders
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+
+          <v-list-item
+            @click="navigate('editProfile')" 
+          >
+            <v-list-item-action>
+              <v-icon>account_circle</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>
+                User Profile
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -167,9 +180,6 @@
       navigate(to){
         this.$router.push(to)
       },
-      dashboard(){
-        window.location.replace("http://127.0.0.1:8000/volantuser/home")
-      }
     }
 	}
 	
