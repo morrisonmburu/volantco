@@ -218,6 +218,8 @@
 
         					<input id="duration_text" type="hidden" v-model="duration" required></input>
 
+        					<input id="distance" type="hidden" v-model="distance" required>
+
         					<input type="hidden" name="stopoverlocation" id="stopoverlocation"/>
 
         				</tab-content>
@@ -457,70 +459,6 @@ flat
 <tab-content icon="ti-info-alt" :before-change="validateInfo" title="Additional Information">
 	<v-form v-model="valid">
 
-			<!-- <v-autocomplete
-				v-model="selectLocation"
-				:disabled="isUpdating"
-				:items="locations"
-				filled
-				chips
-				color="blue-grey lighten-2"
-				label="Select Stopovers"
-				item-text="name"
-				item-value="name"
-				multiple
-				@change="onChange"
-				>
-				<template v-slot:selection="data">
-					<v-chip
-					v-bind="data.attrs"
-					:input-value="data.selected"
-					close
-					@click="data.select"
-					@click:close="remove(data.item)"
-					>
-					<v-avatar left>
-						<v-icon>add_location</v-icon>
-					</v-avatar>
-					{{ data.item.name }}
-				</v-chip>
-			</template>
-			<template style="overflow: scroll;" id="getData" v-slot:item="data">
-				<template v-if="typeof data.item !== 'object'">
-					<v-list-item-content v-text="data.item"></v-list-item-content>
-				</template>
-				<template v-else>
-					<v-list-item-avatar>
-						<v-icon>add_location</v-icon>
-					</v-list-item-avatar>
-					<v-list-item-content>
-						<v-list-item-title v-html="data.item.name"></v-list-item-title>
-					</v-list-item-content>
-				</template>
-			</template>
-		</v-autocomplete>
-
-		<div style="display: none;" name="sendLocation" id="sendLocation"></div>
-
-		<v-row justify="center">
-			<v-dialog v-model="dialog" persistent max-width="600px">
-				<v-card>
-					<v-card-title>
-						<span class="headline">Stopover Description</span>
-					</v-card-title>
-					<v-card-text>
-						<label  style="font-size: 15px;">Description:</label>
-						<fg-input v-model="description" style="font-size: 15px" class="input-lg" addon-left-icon="now-ui-icons files_paper" placeholder="Description..." id="description" type="text" required > 
-						</fg-input>
-					</v-card-text>
-					<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-						<v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
-					</v-card-actions>
-				</v-card>
-			</v-dialog>
-		</v-row> -->
-
 		<fg-input
 			style="font-size: 15px"
 			class="input-lg"
@@ -609,6 +547,8 @@ export default{
 		from: '',
 		duration: '',
 		dtime: '',
+		dprice: '',
+		distance: 0,
 		tab: null,
 		express: false,
 		pickup: false,
@@ -654,7 +594,6 @@ export default{
 		autoUpdate: true,
 		isUpdating: false,
 		description: '',
-		dialog: false,
 		stopoverlocation: [],
 	}),
 
@@ -714,6 +653,9 @@ export default{
 				this.to = $("#origin").val()
 				this.from = $("#destination").val()
 				this.duration = $("#duration_text").val()
+				this.distance = $("#distance").val()
+
+				console.log(distance)
 
 				let time = new Date();
 				time.setMinutes(time.getMinutes() + Math.round(this.duration));

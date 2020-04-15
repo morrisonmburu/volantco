@@ -312,7 +312,7 @@ function myMap() {
 					var duration_text = duration.text;
 					var duration_value = duration.value;
 					// $('#in_mile').text(distance_in_mile.toFixed(2));
-					// $('#in_kilo').text(distance_in_kilo.toFixed(2));
+					$('#distance').text(distance_in_kilo.toFixed(2));
 					$('#duration_text').val(duration_value/60);
 					$('#duration_value').text(duration_value);
 					// $('#from').text(origin);
