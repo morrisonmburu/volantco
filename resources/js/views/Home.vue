@@ -173,7 +173,7 @@
         				>
         				<tab-content icon="ti-location-pin" title="Enter Locations" :before-change="validateLocation">
 
-        					<label style="font-size: 15px;">Your Location:</label>
+        					<label style="font-size: 15px;">Pickup Location:</label>
 
         					<fg-input
         						style="font-size: 15px"
