@@ -53,6 +53,36 @@ class CustomerController extends Controller
             ]);
     }
 
+    public function saveVolantuser(Request $request){
+
+        $validator = Validator::make($request->all(), [
+                'name' => 'required|max:50',
+                'email' => 'required|email',
+                'password' => 'required|min:6',
+                'phone' => 'required',
+                'c_password' => 'required|same:password',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['error' => $validator->errors()], 401);
+            }
+
+            $data = $request->only(['name', 'email', 'phone','password']);
+            $data['password'] = bcrypt($data['password']);
+
+            $user = Volantuser::create($data);
+            $user->is_admin = 0;
+
+            return response()->json([
+                'user' => $user,
+                'token' => $user->createToken('usertoken')->accessToken,
+            ]);
+    }
+
+    public function allVolantusers(){
+        return response()->json(Volantuser::all(),200);
+    }
+
     public function getCustomers(){
         $data = Volantuser::orderBy("id", "desc")->get();
         return view("dashboard.customer")->withData($data);

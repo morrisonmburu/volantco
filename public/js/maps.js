@@ -39,6 +39,16 @@ function myMap() {
 	var strictBounds = document.getElementById('strict-bounds-selector');
 	map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
 
+	//bounds
+	var boundlat1 = 0;
+	var boundlong1 = 0;
+
+	var boundlat2 = 0
+	var boundlong2 = 0;
+
+	var point = [];
+	var stopoverlocation = [];
+	
 	//Autocomplete
 
 	var autocomplete = new google.maps.places.Autocomplete(input);
@@ -55,8 +65,11 @@ function myMap() {
 	autocomplete2.setFields(['address_components', 'geometry', 'icon', 'name']);
 
 	var infowindow = new google.maps.InfoWindow();
-	var infowindowContent = document.getElementById('infowindow-content');
-	infowindow.setContent(infowindowContent);
+	var infowindow2 = new google.maps.InfoWindow();
+	var infowindowContentOrigin = document.getElementById('infowindow-content-origin');
+	var infowindowContentDestination = document.getElementById('infowindow-content-destination');
+	infowindow.setContent(infowindowContentOrigin);
+	infowindow2.setContent(infowindowContentDestination);
 
 	//origin marker
 
@@ -101,17 +114,20 @@ function myMap() {
 		var address = '';
 		if (place.address_components) {
 			address = [
-				(place.address_components[0] && place.address_components[0].short_name || ''),
-				(place.address_components[1] && place.address_components[1].short_name || ''),
-				(place.address_components[2] && place.address_components[2].short_name || '')
-			].join(' ');
+              (place.address_components[0] && place.address_components[0].short_name || ''),
+              (place.address_components[1] && place.address_components[1].short_name || ''),
+              (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
 		}
 
-		$('#origin').val(address);
+		$('#origin').val(place.name+address);
 
-		infowindowContent.children['place-icon'].src = place.icon;
-		infowindowContent.children['place-name'].textContent = place.name;
-		infowindowContent.children['place-address'].textContent = address;
+		boundlat1 = place.geometry.location.lat()
+		boundlong1 = place.geometry.location.lng()
+
+		infowindowContentOrigin.children['place-icon'].src = place.icon;
+		infowindowContentOrigin.children['place-name'].textContent = place.name;
+		infowindowContentOrigin.children['place-address'].textContent = address;
 		infowindow.open(map, marker);
 		});
 
@@ -141,34 +157,104 @@ function myMap() {
 		var address = '';
 		if (place.address_components) {
 			address = [
-				(place.address_components[0] && place.address_components[0].short_name || ''),
-				(place.address_components[1] && place.address_components[1].short_name || ''),
-				(place.address_components[2] && place.address_components[2].short_name || '')
-				].join(' ');
+              (place.address_components[0] && place.address_components[0].short_name || ''),
+              (place.address_components[1] && place.address_components[1].short_name || ''),
+              (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
+ 
 			}
 
-		$('#destination').val(address);
+		$('#destination').val(place.name+address);
 
-		infowindowContent.children['place-icon'].src = place.icon;
-		infowindowContent.children['place-name'].textContent = place.name;
-		infowindowContent.children['place-address'].textContent = address;
-		infowindow.open(map, marker2);
+		boundlat2 = place.geometry.location.lat()
+		boundlong2 = place.geometry.location.lng()
 
-		calculateRoute();
+		infowindowContentDestination.children['place-icon'].src = place.icon;
+		infowindowContentDestination.children['place-name'].textContent = place.name;
+		infowindowContentDestination.children['place-address'].textContent = address;
+		infowindow2.open(map, marker2);
+
+		// calculateRoute();
 		calculateDistance();
+		});
+
+		var defaultBounds = new google.maps.LatLngBounds(
+		  new google.maps.LatLng(boundlat1, boundlat2),
+		  new google.maps.LatLng(boundlong1, boundlong2));
+
+		var input = document.getElementById('stopover');
+
+		var options = {
+		  bounds: defaultBounds,
+		  types: ['establishment']
+		};
+
+		autocomplete3 = new google.maps.places.Autocomplete(input);
+		autocomplete3.bindTo('bounds', map);
+
+		autocomplete3.addListener('place_changed', function() {
+		var place = autocomplete3.getPlace();
+
+		if (!place.geometry) {
+			// User entered the name of a Place that was not suggested and
+			// pressed the Enter key, or the Place Details request failed.
+			window.alert("No details available for input: '" + place.name + "'");
+			return;
+		}
+
+		var geometrylocation = '';
+		var address = '';
+		var loc = '';
+		if (place.address_components) {
+			geometrylocation = place.geometry.location;
+			address = [
+              (place.address_components[0] && place.address_components[0].short_name || ''),
+              (place.address_components[1] && place.address_components[1].short_name || ''),
+              (place.address_components[2] && place.address_components[2].short_name || '')
+            ].join(' ');
+
+            loc = place.geometry.location.lat()+' ,'+place.geometry.location.lng()+' ,'+place.name+address; 
+			}
+
+		point.push(geometrylocation);
+		stopoverlocation.push(loc);
+
+		// console.log(JSON.stringify(stopoverlocation));
+
+		$('input:hidden[name=stopoverlocation]').val(JSON.stringify(stopoverlocation)); 
+
+		calculateRoute(point);
 		});
 
 		//calculating Route
 
 		function calculateRoute(){
+				var waypts = [];
+		        // var array = point;
+		        var checkboxArray = point		        
+		        console.log(checkboxArray);
+		        for (var i = 0; i < checkboxArray.length; i++) {
+		          if (checkboxArray[i] != "") {
+		            waypts.push({
+		              location: checkboxArray[i],
+		              stopover: true
+		            });
+		          }
+		        }
 
+		        // console.log(waypts);
 			var request = {
 				origin: marker.position,
 				destination: marker2.position,
+				waypoints: waypts,
+		        optimizeWaypoints: true,
 				travelMode: google.maps.TravelMode.DRIVING
 			};
 
+			console.log(request);
+
 			directionsService.route(request, function (response, status) {
+
 				if (status == google.maps.DirectionsStatus.OK) {
 					directionsRenderer.setDirections(response);
 					directionsRenderer.setMap(map);
@@ -178,6 +264,9 @@ function myMap() {
 			});
 		}
 
+
+
+
 		}
 
 		function handleLocationError(browserHasGeolocation, infoWindow, pos) {
@@ -185,7 +274,7 @@ function myMap() {
 		infoWindow.setContent(browserHasGeolocation ?
 			'Error: The Geolocation service failed.' :
 			'Error: Your browser doesn\'t support geolocation.');
-		infoWindow.open(map);
+		alert("Error: The Geolocation service failed., Error: Your browser doesn\'t support geolocation.");
 		}
 
 		function calculateDistance(){

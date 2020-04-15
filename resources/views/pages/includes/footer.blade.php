@@ -4,18 +4,13 @@
         <nav>
           <ul>
             <li>
-              <a href="https://www.creative-tim.com">
-                Creative Tim
+              <a href="https://volantco.net">
+                Volant Co
               </a>
             </li>
             <li>
-              <a href="http://presentation.creative-tim.com">
+              <a href="https://volantco.net/aboutus">
                 About Us
-              </a>
-            </li>
-            <li>
-              <a href="http://blog.creative-tim.com">
-                Blog
               </a>
             </li>
           </ul>
@@ -25,8 +20,8 @@
           <script>
             document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
           </script>, Designed by
-          <a href="https://www.invisionapp.com" target="_blank">Invision</a>. Coded by
-          <a href="https://www.creative-tim.com" target="_blank">Creative Tim</a>.
+          Coded by
+          <a href="#" target="_blank">Obspace Africa</a>.
         </div>
       </div>
     </footer>

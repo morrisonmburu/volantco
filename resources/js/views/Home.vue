@@ -1,3 +1,4 @@
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style type="text/css">
 
 #description {
@@ -115,7 +116,7 @@
         <template>
         	<div>
 
-        		<div class="row" style="margin-right:200px; margin-left:0;">
+        		<div class="row" style="margin-right:200px; margin-left:0;" height="100px">
         			<v-card class="col-md-5 elevation-12 d-inline-block mx-sm-auto" id="pac-card">
 
         			<v-alert
@@ -200,9 +201,24 @@
 								>
 							</fg-input>
 
+							<label style="font-size: 15px;">Stopovers (optional, you can pick multiple locations):</label>
+
+							<fg-input
+        						style="font-size: 15px"
+								class="input-lg"
+								addon-left-icon="now-ui-icons location_pin"
+								placeholder="Enter a stopover"
+								id="stopover"
+								type="text"
+								required
+								>
+							</fg-input>
+
         					<input type="hidden" v-model="from" id="destination" name="destination" required>
 
         					<input id="duration_text" type="hidden" v-model="duration" required></input>
+
+        					<input type="hidden" name="stopoverlocation" id="stopoverlocation"/>
 
         				</tab-content>
         				<tab-content icon="ti-package" :before-change="validatePackage" title="Select Package">
@@ -441,6 +457,70 @@ flat
 <tab-content icon="ti-info-alt" :before-change="validateInfo" title="Additional Information">
 	<v-form v-model="valid">
 
+			<!-- <v-autocomplete
+				v-model="selectLocation"
+				:disabled="isUpdating"
+				:items="locations"
+				filled
+				chips
+				color="blue-grey lighten-2"
+				label="Select Stopovers"
+				item-text="name"
+				item-value="name"
+				multiple
+				@change="onChange"
+				>
+				<template v-slot:selection="data">
+					<v-chip
+					v-bind="data.attrs"
+					:input-value="data.selected"
+					close
+					@click="data.select"
+					@click:close="remove(data.item)"
+					>
+					<v-avatar left>
+						<v-icon>add_location</v-icon>
+					</v-avatar>
+					{{ data.item.name }}
+				</v-chip>
+			</template>
+			<template style="overflow: scroll;" id="getData" v-slot:item="data">
+				<template v-if="typeof data.item !== 'object'">
+					<v-list-item-content v-text="data.item"></v-list-item-content>
+				</template>
+				<template v-else>
+					<v-list-item-avatar>
+						<v-icon>add_location</v-icon>
+					</v-list-item-avatar>
+					<v-list-item-content>
+						<v-list-item-title v-html="data.item.name"></v-list-item-title>
+					</v-list-item-content>
+				</template>
+			</template>
+		</v-autocomplete>
+
+		<div style="display: none;" name="sendLocation" id="sendLocation"></div>
+
+		<v-row justify="center">
+			<v-dialog v-model="dialog" persistent max-width="600px">
+				<v-card>
+					<v-card-title>
+						<span class="headline">Stopover Description</span>
+					</v-card-title>
+					<v-card-text>
+						<label  style="font-size: 15px;">Description:</label>
+						<fg-input v-model="description" style="font-size: 15px" class="input-lg" addon-left-icon="now-ui-icons files_paper" placeholder="Description..." id="description" type="text" required > 
+						</fg-input>
+					</v-card-text>
+					<v-card-actions>
+						<v-spacer></v-spacer>
+						<v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+						<v-btn color="blue darken-1" text @click="dialog = false">Save</v-btn>
+					</v-card-actions>
+				</v-card>
+			</v-dialog>
+		</v-row> -->
+
 		<fg-input
 			style="font-size: 15px"
 			class="input-lg"
@@ -462,17 +542,23 @@ flat
 		</v-datetime-picker>
 
 		<v-radio-group v-model="payment">
-	       <v-radio
-              label="Pay With Mpesa"
-              color="green"
-              value="mpesa"
-            ></v-radio>
-            <v-radio
-              label="Pay On Delivery"
-              color="blue"
-              value="delivery"
-            ></v-radio>
-	    </v-radio-group>
+			<div class="row">
+				<div class="col-md-6">
+					<v-radio
+		              label="Pay With Mpesa"
+		              color="green"
+		              value="mpesa"
+		            ></v-radio>
+				</div>
+				<div class="col-md-6">
+					<v-radio
+			              label="Pay On Delivery"
+			              color="blue"
+			              value="delivery"
+			            ></v-radio>
+				</div>
+			</div>  
+	</v-radio-group>
 
 </v-form>
 </tab-content>
@@ -483,7 +569,13 @@ flat
 
 <div id="googleMap"></div>
 
-<div id="infowindow-content">
+<div id="infowindow-content-origin">
+	<img src="" width="16" height="16" id="place-icon">
+	<span id="place-name"  class="title"></span><br>
+	<span id="place-address"></span>
+</div>
+
+<div id="infowindow-content-destination">
 	<img src="" width="16" height="16" id="place-icon">
 	<span id="place-name"  class="title"></span><br>
 	<span id="place-address"></span>
@@ -505,7 +597,7 @@ export default{
 	components: {
 		Card,
 		[Button.name]: Button,
-		[FormGroupInput.name]: FormGroupInput
+		[FormGroupInput.name]: FormGroupInput,
 	},
 	data: () => ({
 		valid: null,
@@ -556,9 +648,34 @@ export default{
 		datetimeRules: [
 		v => !!v || 'Information is required',
 		],
+		locations: [],
+		selectLocation: [],
+		sendLocation: [],
+		autoUpdate: true,
+		isUpdating: false,
+		description: '',
+		dialog: false,
+		stopoverlocation: [],
 	}),
 
+	watch: {
+      isUpdating (val) {
+        if (val) {
+          setTimeout(() => (this.isUpdating = false), 3000)
+        }
+      },
+    },
+
 	mounted() {
+
+		axios.defaults.headers.common['Content-Type'] = 'application/json'
+		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('volant.jwt')
+
+	     axios.get(`/api/getlocations`).then(response => {
+	        	if(response.data.length != 0){
+	        		this.locations = response.data
+	        	}
+	        })
 
 		let maps = document.createElement('script');    
 		maps.setAttribute('src',"/js/maps.js");
@@ -570,6 +687,11 @@ export default{
 	},
 
 	methods: {
+
+			remove (item) {
+		        const index = this.selectLocation.indexOf(item.name)
+		        if (index >= 0) this.selectLocation.splice(index, 1)
+		    },
 			// receives a place object via the autocomplete component
 			select(value, price){
 				this.value = value
@@ -630,12 +752,15 @@ export default{
 				let phone = user.phone
 				let payment = this.payment
 				let user_id = user.id
+				let stopoverlocation = $('input:hidden[name=stopoverlocation]').val();
+
+				// console.log(stopoverlocation);
 
 				this.successMessage = 'You have successfully made an order'
 
 				this.loader = true
 
-				axios.post('/api/storeorders', {user_id, to, from, packages, price, datetime, email, phone, instructions, payment}).then(response => {
+				axios.post('/api/storeorders', {user_id, to, from, packages, price, datetime, email, phone, instructions, payment, stopoverlocation}).then(response => {
 					let data = response.data
 
 					this.loader = false
@@ -652,6 +777,10 @@ export default{
 			},
 			closeSuccess(v){
 				this.success = v
+			},
+			onChange(){
+				$("#sendLocation").text(this.selectLocation)
+				this.dialog = true
 			}
 
 		}

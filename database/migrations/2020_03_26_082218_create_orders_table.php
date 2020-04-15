@@ -28,6 +28,7 @@ class CreateOrdersTable extends Migration
             $table->string('phone')->nullable();
             $table->integer('user_id');
             $table->string('instructions')->nullable();
+            $table->text('stopoverlocation')->nullable();
         });
     }
 

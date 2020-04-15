@@ -19,7 +19,9 @@
         "maatwebsite/excel": "^3.0",
         "twilio/sdk": "^5.16",
         "usmanhalalit/laracsv": "1.*@dev",
-        "vsmoraes/laravel-pdf": "^2.0"
+        "vsmoraes/laravel-pdf": "^2.0",
+        "kodeine/laravel-meta": "master",
+        "dacastro4/laravel-gmail": "^2.0"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

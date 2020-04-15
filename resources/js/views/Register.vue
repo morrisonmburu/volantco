@@ -223,7 +223,7 @@ import { Card, Button, FormGroupInput } from '../assets/components';
 	                    if (localStorage.getItem('volant.jwt') != null) {
 	                        this.$emit('loggedIn')
 	                        let nextUrl = this.$route.params.nextUrl
-	                        window.location.replace("http://127.0.0.1:8000/volantuser/home")
+	                        window.location.replace("http://volantco.net/volantuser/home")
 	                        // this.$router.push((nextUrl != null ? nextUrl : '/volantuser/home'))
 	                    }
 	                })

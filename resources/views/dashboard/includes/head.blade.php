@@ -9,7 +9,8 @@
 
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-	<title>Volant Courier | Dashboard</title>
+    <link rel="icon" type="image/gif/jpg" href="/images/logo.jpg">
+	<title>Volant Co | Dashboard</title>
 
 	<!-- Global stylesheets -->
 	<link href="{{url('https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900')}}" rel="stylesheet" type="text/css">

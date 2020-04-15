@@ -2,9 +2,9 @@
   <nav class="navbar navbar-expand-lg bg-primary fixed-top navbar-transparent " color-on-scroll="400">
     <div class="container">
       <div class="navbar-translate">
-        <a class="navbar-brand" href="/" rel="tooltip" title="Volant Courier" data-placement="bottom" target="_blank">
+        <a class="navbar-brand" href="/" rel="tooltip" title="Volant Co" data-placement="bottom">
           <img class="n-logo rounded-circle" style="width: 4.5em; height: 4.5em;" src="/images/logo.jpg" alt="">
-          Volant Courier
+          Volant Co
         </a>
         <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-bar top-bar"></span>
@@ -20,18 +20,18 @@
               <p>Our Packages</p>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink1">
-              <a class="dropdown-item" href="./index.html">
+              <a class="dropdown-item" href="/packages">
                 <i class="now-ui-icons business_chart-pie-36"></i> Metro Deliveris
               </a>
-              <a class="dropdown-item" target="_blank" href="/metro">
+              <a class="dropdown-item" target="_blank" href="/packages">
                 <i class="now-ui-icons design_bullet-list-67"></i> Cargo and Freight
               </a>
 
-               <a class="dropdown-item" target="_blank" href="/packaging">
+               <a class="dropdown-item" target="_blank" href="/packages">
                 <i class="now-ui-icons design_bullet-list-67"></i> Packaging and Moves
               </a>
 
-               <a class="dropdown-item" target="_blank" href="/construction">
+               <a class="dropdown-item" target="_blank" href="/packages">
                 <i class="now-ui-icons design_bullet-list-67"></i> Construction Logistics
               </a>
 

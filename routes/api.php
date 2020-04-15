@@ -16,11 +16,18 @@ use Illuminate\Http\Request;
 Route::post('login', 'CustomerController@login');
 Route::post('register', 'CustomerController@register');
 
-Route::group(['middleware' => 'auth:volantuser-api'], function(){
+// Route::group(['middleware' => 'auth:volantuser-api'], function(){
 	Route::post('/getorders', 'ordersController@allOrders');
 	Route::post('/deleteOrder', 'ordersController@deleteOrder');
 	Route::post('/storeorders', 'ordersController@store');
 	Route::post('/getuser', 'CustomerController@getUser');
 	Route::post('/editInfo', 'CustomerController@editInfo');
 	Route::post("/changePassword", "CustomerController@changePassword");
-});
+	Route::get("/getlocations", 'locationsController@getlocations');
+// });
+
+//rest Api
+Route::get('/getallorders', 'ordersController@getOrders');
+Route::post('/saveOrders', 'ordersController@restStore');
+Route::get('/allVolantusers', 'CustomerController@allVolantusers');
+Route::post('/saveVolantuser', 'CustomerController@saveVolantuser');

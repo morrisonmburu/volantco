@@ -1,4 +1,6 @@
+
 window._ = require('lodash');
+window.Popper = require('popper.js').default;
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -7,7 +9,6 @@ window._ = require('lodash');
  */
 
 try {
-    window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
@@ -43,7 +44,7 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo';
+// import Echo from 'laravel-echo'
 
 // window.Pusher = require('pusher-js');
 

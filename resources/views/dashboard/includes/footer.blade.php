@@ -1,6 +1,6 @@
 <!-- Footer -->
 					<div class="footer text-muted">
-						&copy; 2015. <a href="#">Limitless Web App Kit</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Eugene Kopyov</a>
+						&copy; 2020. <a href="#">Volant CO</a> by <a href="http://themeforest.net/user/Kopyov" target="_blank">Obspace Africs</a>
 					</div>
 					<!-- /footer -->
 

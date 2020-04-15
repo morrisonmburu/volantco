@@ -24,10 +24,11 @@ class sendMail extends Mailable
     public $_info;
     public $_to;
     public $_from;
+    public $_volantusername;
     // public $_countdown;
     // public $cancel_info;
 
-    public function __construct($name, $time, $price, $info, $to, $from)
+    public function __construct($name, $time, $price, $info, $to, $from, $volantusername)
     {
        $this->_name = $name;
        $this->_time = $time;
@@ -35,6 +36,7 @@ class sendMail extends Mailable
        $this->_info = $info;
        $this->_to = $to;
        $this->_from = $from;
+       $this->_volantusername = $volantusername;
     }
     /**
      * Build the message.
@@ -43,11 +45,11 @@ class sendMail extends Mailable
      */
     public function build()
     {
-        return $this->from('volant@gmail.com', 'Volant Courier')
+        return $this->from('morrisonmburu7@gmail.com', 'Volant Courier')
             ->subject('Do not reply, Volant Couriers')
             ->markdown('mails')
             ->with([
-                'name' =>  Auth::user()->name,
+                'name' =>  $this->_volantusername,
                 'title' => $this->_name,
                 'time' =>  $this->_time,
                 'price' =>  $this->_price,
@@ -56,7 +58,7 @@ class sendMail extends Mailable
                 'from' => $this->_from,
                 // 'countdown' => $this->_countdown,
                 // 'cancelinfo' => $this->cancel_info,
-                'link' => 'http://volantco.net/'
+                'link' => 'https://volantco.net/'
             ]);
     }
 }

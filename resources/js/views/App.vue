@@ -10,7 +10,7 @@
     >
     <v-toolbar justify-center color="info">
           <v-toolbar-title sytle="color: #ffffff;">
-            Volant Courier
+            Volant Co
           </v-toolbar-title>
         </v-toolbar>
       <v-spacer></v-spacer>
@@ -174,7 +174,7 @@
         localStorage.removeItem('volant.jwt')
         localStorage.removeItem('volant.user')
         this.change()
-        window.location.replace("http://127.0.0.1:8000/volantuser/login")
+        window.location.replace("http://volantco.net/volantuser/login")
         // this.$router.push('/')
       },
       navigate(to){

@@ -22,6 +22,8 @@ Route::group(['middleware' => ['web']], function(){
 	Route::resource("orders", "ordersController");
 	Route::get("/", "pagesController@index");
 	Route::resource("dispatch", 'dispatchController');
+	Route::resource("locations", 'locationsController');
+	Route::get("/packages", 'pagesController@packages');
 
 });
 

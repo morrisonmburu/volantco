@@ -279,7 +279,6 @@
 
 	        axios.post(`/api/getorders`, {user_id}).then(response => {
 	        	let data = []
-	        	console.log(response.data.length)
 	        	if(response.data.length != 0){
 	        		this.orders = response.data
 	        	}
