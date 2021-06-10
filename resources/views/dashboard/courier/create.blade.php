@@ -18,10 +18,10 @@
 						<button type="submit" name="search" id="search-btn" class="btn"><i class="fa fa-search"></i></button>
 					</span>
 				</div>
-			</form>   
+			</form>
 
 		</div>
-	</section>                    
+	</section>
 
 	@if (session('success'))
 	<div class="alert alert-success">
@@ -51,8 +51,8 @@
 			<div class="col-sm-12 lobipanel-parent-sortable ui-sortable" data-lobipanel-child-inner-id="ekiAi16e04">
 				<div class="panel panel-bd lobidrag lobipanel lobipanel-sortable" data-inner-id="ekiAi16e04" data-index="0">
 					<div class="panel-heading ui-sortable-handle">
-						<div class="btn-group"> 
-							<a style="background-color:#26a69a; border-color: #26a69a" class="btn btn-primary" href="/courier/"> <i class="fa fa-plus"></i> View Couriers</a>  
+						<div class="btn-group">
+							<a style="background-color:#26a69a; border-color: #26a69a" class="btn btn-primary" href="/courier/"> <i class="fa fa-plus"></i> View Drivers</a>
 						</div>
 						<div class="dropdown pull-right"><ul class="dropdown-menu dropdown-menu-right"><li><a data-func="editTitle" data-tooltip="Edit title" data-toggle="tooltip" data-title="Edit title" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-pencil"></i><span class="control-title">Edit title</span></a></li><li><a data-func="unpin" data-tooltip="Unpin" data-toggle="tooltip" data-title="Unpin" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-move"></i><span class="control-title">Unpin</span></a></li><li><a data-func="reload" data-tooltip="Reload" data-toggle="tooltip" data-title="Reload" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-reload"></i><span class="control-title">Reload</span></a></li><li><a data-func="minimize" data-tooltip="Minimize" data-toggle="tooltip" data-title="Minimize" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-minus"></i><span class="control-title">Minimize</span></a></li><li><a data-func="expand" data-tooltip="Fullscreen" data-toggle="tooltip" data-title="Fullscreen" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-fullscreen"></i><span class="control-title">Fullscreen</span></a></li><li><a data-func="close" data-tooltip="Close" data-toggle="tooltip" data-title="Close" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-close"></i><span class="control-title">Close</span></a></li></ul><div class="dropdown-toggle" data-toggle="dropdown"><span class="panel-control-icon glyphicon glyphicon-cog"></span></div></div></div>
 						<div class="panel-body">
@@ -106,7 +106,7 @@
 												{{ Form::text('county', old('county'), [ 'required'=>"", 'class' => "form-control", 'placeholder' => "Enter county"]) }}
 
 											</div>
-										</td> 
+										</td>
 									</tr>
 
 									<tr>
@@ -121,7 +121,7 @@
 											</div>
 
 											</div>
-										</td> 
+										</td>
 
 										<td bgcolor="">
 											<div class="col-sm-10 form-group">
@@ -147,7 +147,7 @@
 													<option value="Contract">Contract</option>
 												</select>
 											</div>
-										</td> 
+										</td>
 
 										<td bgcolor="">
 											<div class="col-sm-10 form-group">
@@ -159,7 +159,7 @@
 									</tr>
 
 									<tr>
-										
+
 											<td>
 
 												<div class="col-sm-10 form-group">
@@ -174,9 +174,9 @@
 
 													</div>
 												</div>
-												
 
-											</td> 
+
+											</td>
 
 											<td bgcolor="">
 												<div class="col-sm-10 form-group">
@@ -186,44 +186,16 @@
 													{{ Form::text('licenseIssuingState',  old('licenseIssuingState'), ['class' => "form-control", 'placeholder' => "Enter License Issuing state."]) }}
 
 												</div>
-											</td> 
+											</td>
 
 										</tr>
 
-										<tr>
-											<td bgcolor="">
-												<div class="col-sm-10 form-group">
-													<label>Hire Date</label>
-													<div class="input-group date">
-														<div class="input-group-addon">
-															<i class="icon-calendar22"></i>
-														</div>
-
-														<input name="hireDate" value="{{old('hireDate')}}" type="text" class="form-control daterange-single pull-right">
-
-													</div>
-												</div>
-											</td>
-
-											<td>   
-												<div class="col-sm-10 form-group">
-													<label>Termination Date</label>
-													<div class="input-group date">
-														<div class="input-group-addon">
-															<i class="icon-calendar22"></i>
-														</div>
-
-														<input name="terminationDate" value="{{old('terminationDate')}}" type="text" class="form-control daterange-single pull-right">
-
-													</div>
-												</div> 
-											</td> 
 										</tr>
 										<tr>
 											<td colspan="2" bgcolor="#009688"> <strong>
 												<font color="white">Emergency Contact</font>
 											</strong>
-										</td> 
+										</td>
 									</tr>
 
 									<tr>
@@ -247,11 +219,11 @@
 												{{ Form::tel('emergencyPhoneNo', old('emergencyPhoneNo'), [ 'required'=>"",'class' => "form-control", 'placeholder' => "Enter Person No.", "maxlength" => "9", "data-country" => "KE"]) }}
 											</div>
 											</div>
-										</td> 
+										</td>
 									</tr>
 
 									<tr>
-										<td colspan="2"> 
+										<td colspan="2">
 											<div class="col-sm-10 reset-button">
 												{{ Form::reset('Clear form', ['class'=>'btn btn-warning form-button', 'style'=>'background-color: #26a69a, border-color:#26a69a']) }}
 
@@ -259,9 +231,9 @@
 
 
 											</div>
-										</td>   
+										</td>
 									</tr>
-									
+
 								</tbody>
 							</table>
 

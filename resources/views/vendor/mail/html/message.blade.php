@@ -21,7 +21,7 @@
     {{-- Footer --}}
     @slot('footer')
         @component('mail::footer')
-            © {{ date('Y') }} {{ __('Volant Couriers') }}. @lang('All rights reserved.')
+            © {{ date('Y') }} {{ __('Volant Ltd') }}. @lang('All rights reserved.')
         @endcomponent
     @endslot
 @endcomponent

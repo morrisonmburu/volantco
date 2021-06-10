@@ -15,20 +15,24 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('to');
-            $table->string('from');
-            $table->string('package');
-            $table->string('price');
-            $table->string('time');
-            // $table->string('countdown')->nullable();
-            $table->string('payment_type');
-            $table->integer('mark')->nullable();
-            $table->integer('cancel')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
-            $table->integer('user_id');
-            $table->string('instructions')->nullable();
-            $table->text('stopoverlocation')->nullable();
+            $table->integer("category_id");
+            $table->integer("user_id");
+            $table->string("sender_name")->nullable();
+            $table->string("sender_phone")->nullable();
+            $table->string("recipient_name");
+            $table->string("recipient_phone");
+            $table->integer("truck_type_id");
+            $table->double("package_price", 12, 2);
+            $table->double("distance", 12, 2);
+            $table->integer("stops_count")->default(0);
+            $table->string("description");
+            $table->datetime("pickup_datetime");
+            $table->datetime('delivery_datetime')->nullable();
+            $table->string("instructions")->nullable();
+            $table->integer("payment_id")->nullable();
+            $table->integer("status")->default(0);
+            $table->string("device")->nullable();
+            $table->timestamps();
         });
     }
 

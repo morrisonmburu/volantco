@@ -25,18 +25,22 @@ class sendMail extends Mailable
     public $_to;
     public $_from;
     public $_volantusername;
+    public $_description;
+    public $_category;
     // public $_countdown;
     // public $cancel_info;
 
-    public function __construct($name, $time, $price, $info, $to, $from, $volantusername)
+    public function __construct($name, $time, $price, $info, $to, $from, $volantusername, $description, $category)
     {
        $this->_name = $name;
-       $this->_time = $time;
+       $this->_time = date("m D, Y", strtotime($time));
        $this->_price = $price;
        $this->_info = $info;
        $this->_to = $to;
        $this->_from = $from;
        $this->_volantusername = $volantusername;
+       $this->_description = $description;
+       $this->_category = $category;
     }
     /**
      * Build the message.
@@ -45,20 +49,22 @@ class sendMail extends Mailable
      */
     public function build()
     {
-        return $this->from('morrisonmburu7@gmail.com', 'Volant Courier')
-            ->subject('Do not reply, Volant Couriers')
+        return $this->from('morrisonmburu7@gmail.com', 'Volant Ltd')
+            ->subject('Do not reply, Volant Ltd')
             ->markdown('mails')
             ->with([
                 'name' =>  $this->_volantusername,
-                'title' => $this->_name,
-                'time' =>  $this->_time,
-                'price' =>  $this->_price,
+                'package' => $this->_name,
+                'pickup_time' =>  $this->_time,
+                'amount' =>  $this->_price,
                 'info' => $this->_info,
                 'to' => $this->_to,
                 'from' => $this->_from,
+                'description' => $this->_description,
+                'category' => $this->_category,
                 // 'countdown' => $this->_countdown,
                 // 'cancelinfo' => $this->cancel_info,
-                'link' => 'https://volantco.net/'
+                'link' => 'https://volantltd.com/'
             ]);
     }
 }

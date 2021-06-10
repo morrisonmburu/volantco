@@ -1,326 +1,309 @@
 <style type="text/css">
-	.mobile {
-      color: #333;
+    #grid{
+        margin-right: auto;
+        margin-left: auto;
     }
 
-    @media screen and (max-width: 768px) {
-      .mobile table.v-table tr {
-        max-width: 100%;
-        position: relative;
-        display: block;
+    @media (min-width: 769px) {
+      #grid {
+        width: 769px;
       }
-
-      .mobile table.v-table tr:nth-child(odd) {
-        border-left: 6px solid deeppink;
-      }
-
-      .mobile table.v-table tr:nth-child(even) {
-        border-left: 6px solid cyan;
-      }
-
-      .mobile table.v-table tr td {
-        display: flex;
-        width: 100%;
-        border-bottom: 1px solid #f5f5f5;
-        height: auto;
-        padding: 10px;
-      }
-
-      .mobile table.v-table tr td ul li:before {
-        content: attr(data-label);
-        padding-right: .5em;
-        text-align: left;
-        display: block;
-        color: #999;
-
-      }
-      .v-datatable__actions__select
-      {
-        width: 50%;
-        margin: 0px;
-        justify-content: flex-start;
-      }
-      .mobile .theme--light.v-table tbody tr:hover:not(.v-datatable__expand-row) {
-        background: transparent;
-      }
-
     }
-    .flex-content {
-      padding: 0;
-      margin: 0;
-      list-style: none;
-      display: flex;
-      flex-wrap: wrap;
-      width: 100%;
+    @media (min-width: 1025px) {
+      #grid {
+        width: 1025px;
+      }
     }
-
-    .flex-item {
-      padding: 5px;
-      width: 50%;
-      height: 80px;
-      font-weight: bold;
+    @media (min-width: 1200px) {
+      #grid {
+        width: 1300px;
+      }
     }
+    
 </style>
 <template>
-	<v-container fluid fill-height>
-		<v-tabs
-		v-model="tab"
-		background-color="transparent"
-      	color="basil"
-      	grow
-		>
-			<v-tab>
-		       In Transit
-		     </v-tab>
 
-		     <v-tab>
-		       Completed
-		     </v-tab>
+    <localization id="grid" :language="currentLocale.language">
+        <intl :locale="currentLocale.locale" >
+            <div>
+                <pdfexport ref="gridPdfExport">
+                    <Grid 
+                    :style="{ height: '700px'}"
+                    :sortable="sortable"
+                    :filterable="filterable"
+                    :groupable="groupable"
+                    :reorderable="reorderable"
+                    :pageable="{ buttonCount: 4, pageSizes: true }"
+                    :data-items="dataResult"
+                    :skip="skip" 
+                    :take="take" 
+                    :sort="sort" 
+                    :group="group" 
+                    :filter="filter" 
+                    :columns="columns"
+                    @datastatechange="dataStateChange"
+                    :detail="detailComponent"
+                    :expand-field="'expanded'"
+                    @expandchange="expandChange"
+                    @columnreorder="columnReorder"
+                    :column-menu="columnMenu"
+                    >
+                    <toolbar>
+                        <button
+                        title="Export to Excel"
+                        class="k-button"
+                        @click="exportExcel"
+                        style="color:#fff; background-color:#8F0236;"
+                        >
+                        Export to Excel
+                    </button>&nbsp;
+                    <button 
+                    class="k-button"
+                    @click="exportPDF"
+                    style="color:#fff; background-color:#8F0236;"
+                    >
+                    Export to PDF
+                </button>
+            </toolbar>
+        </Grid>
+    </pdfexport>
+</div>
+</intl>
+</localization>
 
-		     <v-tab>
-		       Cancelled
-		     </v-tab>
 
-		</v-tabs>
-
-		<v-spacer></v-spacer>
-
-	<v-toolbar dark color="primary" fixed>
-        <v-toolbar-title class="white--text">Orders</v-toolbar-title>
-        <v-spacer></v-spacer>
-        <v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-        <v-menu offset-y :nudge-left="170" :close-on-content-click="false">
-            <v-btn icon>
-                <v-icon>more_vert</v-icon>
-              </v-btn>
-            <v-list>
-              <v-list-tile  v-for="(item, index) in headers"  :key="item.value"   @click="changeSort(item.value)">
-                <v-list-tile-title>Text<v-icon v-if="pagination.sortBy === item.value">{{pagination.descending ? 'arrow_downward':'arrow_upward'}}</v-icon></v-list-tile-title>
-              </v-list-tile>
-            </v-list>
-          </v-menu>
-      </v-toolbar>
-
-          <v-layout v-resize="onResize" column style="padding-top:56px">
-
-	          	<v-alert
-					:value="success"
-					dismissible
-					transition="scale-transition"
-					text
-					prominent
-					outlined
-					type="success"
-					class="mx-sm-auto"
-					width="350px"
-					@input="close"
-					align-center
-					style="margin-bottom:"
-					justfy-center
-					>
-					{{ successMessage }}
-				</v-alert>
-				<v-spacer></v-spacer>
-
-				<v-tabs-items v-model="tab">
-			      <v-tab-item>
-			      	<v-data-table :headers="headers" :items="orders" :search="search" :hide-default-header="isMobile" :class="{mobile: isMobile}">
-		              <template v-slot:item="props">
-		                <tr v-if="!isMobile && props.item.mark === 0 && props.item.cancel === 0">
-		                  <td class="text-xs-right">{{ props.item.to }}</td>
-		                  <td class="text-xs-right">{{ props.item.from }}</td>
-		                  <td class="text-xs-right">{{ props.item.package }}</td>
-		                  <td class="text-xs-right">{{ props.item.time }}</td>
-		                  <td class="text-xs-right">{{ props.item.price }}</td>
-		                  <td>
-		                  	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
-		                  		<v-icon>delete</v-icon>
-		                  	</v-btn>
-		                  </td>
-		                </tr>
-		                <tr v-else-if="isMobile && props.item.mark === 0 && props.item.cancel === 0">
-		                  <td>
-		                    <ul class="flex-content">
-		                      <li class="flex-item" data-label="to">{{ props.item.to }}</li>
-		                      <li class="flex-item" data-label="from">{{ props.item.from }}</li>
-		                      <li class="flex-item" data-label="package">{{ props.item.package }}</li>
-		                      <li class="flex-item" data-label="time">{{ props.item.time }}</li>
-		                      <li class="flex-item" data-label="price">{{ props.item.price }}</li>
-		                      <li class="flex-item" data-label="id">
-		                      	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
-		                  		<v-icon>delete</v-icon>
-		                  	</v-btn>
-		                      </li>
-		                    </ul>
-		                  </td>
-		                </tr>
-		              </template>
-		              <v-alert slot="no-results" :value="true" color="error" icon="warning">
-		                Your search for {{ search }} found no results.
-		              </v-alert>
-		            </v-data-table>
-			      </v-tab-item>
-			      <v-tab-item>
-			      	<v-data-table :headers="headers" :items="orders" :search="search" :hide-default-header="isMobile" :class="{mobile: isMobile}">
-		              <template v-slot:item="props">
-		                <tr v-if="!isMobile && props.item.mark === 1 && props.item.cancel === 0">
-		                  <td class="text-xs-right">{{ props.item.to }}</td>
-		                  <td class="text-xs-right">{{ props.item.from }}</td>
-		                  <td class="text-xs-right">{{ props.item.package }}</td>
-		                  <td class="text-xs-right">{{ props.item.time }}</td>
-		                  <td class="text-xs-right">{{ props.item.price }}</td>
-		                  <td>
-		                  	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
-		                  		<v-icon>delete</v-icon>
-		                  	</v-btn>
-		                  </td>
-		                </tr>
-		                <tr v-else-if="isMobile && props.item.mark === 1 && props.item.cancel === 0">
-		                  <td>
-		                    <ul class="flex-content">
-		                      <li class="flex-item" data-label="to">{{ props.item.to }}</li>
-		                      <li class="flex-item" data-label="from">{{ props.item.from }}</li>
-		                      <li class="flex-item" data-label="package">{{ props.item.package }}</li>
-		                      <li class="flex-item" data-label="time">{{ props.item.time }}</li>
-		                      <li class="flex-item" data-label="price">{{ props.item.price }}</li>
-		                      <li class="flex-item" data-label="id">
-		                      	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
-		                  		<v-icon>delete</v-icon>
-		                  	</v-btn>
-		                      </li>
-		                    </ul>
-		                  </td>
-		                </tr>
-		              </template>
-		              <v-alert slot="no-results" :value="true" color="error" icon="warning">
-		                Your search for {{ search }} found no results.
-		              </v-alert>
-		            </v-data-table>
-			      </v-tab-item>
-			      <v-tab-item>
-			      	<v-data-table :headers="headers" :items="orders" :search="search" :hide-default-header="isMobile" :class="{mobile: isMobile}">
-		              <template v-slot:item="props">
-		                <tr v-if="!isMobile && props.item.mark === 0 && props.item.cancel === 1">
-		                  <td class="text-xs-right">{{ props.item.to }}</td>
-		                  <td class="text-xs-right">{{ props.item.from }}</td>
-		                  <td class="text-xs-right">{{ props.item.package }}</td>
-		                  <td class="text-xs-right">{{ props.item.time }}</td>
-		                  <td class="text-xs-right">{{ props.item.price }}</td>
-		                  <td>
-		                  	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
-		                  		<v-icon>delete</v-icon>
-		                  	</v-btn>
-		                  </td>
-		                </tr>
-		                <tr v-else-if="isMobile && props.item.mark === 0 && props.item.cancel === 1">
-		                  <td>
-		                    <ul class="flex-content">
-		                      <li class="flex-item" data-label="to">{{ props.item.to }}</li>
-		                      <li class="flex-item" data-label="from">{{ props.item.from }}</li>
-		                      <li class="flex-item" data-label="package">{{ props.item.package }}</li>
-		                      <li class="flex-item" data-label="time">{{ props.item.time }}</li>
-		                      <li class="flex-item" data-label="price">{{ props.item.price }}</li>
-		                      <li class="flex-item" data-label="id">
-		                      	<v-btn class="mx-2" fab dark small color="red" @click="remove(props.item.id, index)">
-		                  		<v-icon>delete</v-icon>
-		                  	</v-btn>
-		                      </li>
-		                    </ul>
-		                  </td>
-		                </tr>
-		              </template>
-		              <v-alert slot="no-results" :value="true" color="error" icon="warning">
-		                Your search for {{ search }} found no results.
-		              </v-alert>
-		            </v-data-table>
-			      </v-tab-item>
-			    </v-tabs-items>
-        </v-layout>
-	</v-container>
 </template>
 
 <script>
-	export default{
-		name: "orders",
-		data(){
-			return{
-				welcome: "Welcome to Your Orders",
-				orders: [],
-				headers: [
-				{
-					text: 'to',
-					align: 'left',
-					value: "to"
-				},
-				{text: 'from', value: "from"},
-				{text: 'package', value: "package"},
-				{text: 'Time of Delivery', value: "time"},
-				{text: 'Price', value: "price"},
-				{text: 'action'},
-				],
-				pagination: {
-		          sortBy: 'name'
-		        },
-		        selected: [],
-		        search: '',
-		        isMobile: false,
-		        successMessage: '',
-		        success: false,
-		        tab: null,
-			}
-		},
-		beforeMount() {
+import Vue from 'vue'
+import { Grid, GridToolbar } from '@progress/kendo-vue-grid';
+import { DropDownList } from '@progress/kendo-vue-dropdowns';
+import { GridPdfExport } from '@progress/kendo-vue-pdf';
+import { saveExcel } from '@progress/kendo-vue-excel-export';
+import { IntlProvider, load, LocalizationProvider, loadMessages, IntlService } from '@progress/kendo-vue-intl';
 
-			this.user = JSON.parse(localStorage.getItem('volant.user'))
-			let user_id = this.user.id
+import likelySubtags from 'cldr-core/supplemental/likelySubtags.json';
+import currencyData from 'cldr-core/supplemental/currencyData.json';
+import weekData from 'cldr-core/supplemental/weekData.json';
 
-			axios.defaults.headers.common['Content-Type'] = 'application/json'
-			axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('volant.jwt')
+import numbers from 'cldr-numbers-full/main/es/numbers.json';
+import currencies from 'cldr-numbers-full/main/es/currencies.json';
+import caGregorian from 'cldr-dates-full/main/es/ca-gregorian.json';
+import dateFields from 'cldr-dates-full/main/es/dateFields.json';
+import timeZoneNames from 'cldr-dates-full/main/es/timeZoneNames.json';
 
-	        axios.post(`/api/getorders`, {user_id}).then(response => {
-	        	let data = []
-	        	if(response.data.length != 0){
-	        		this.orders = response.data
-	        	}
+load(
+    likelySubtags,
+    currencyData,
+    weekData,
+    numbers,
+    currencies,
+    caGregorian,
+    dateFields,
+    timeZoneNames
+    );
 
-	        })
-	    },
-	    methods: {
-	    	remove(id, index) {
-	    		axios.defaults.headers.common['Content-Type'] = 'application/json'
-				axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('volant.jwt')
+import { process } from '@progress/kendo-data-query';
 
-				axios.post(`/api/deleteOrder`,{id}).then(
-					response => {
-						let data = response.data.order
-						this.orders.splice(index, 1)
-						this.success = true
-						this.successMessage = 'Order'+data.id+' Has been successfully deleted'
-						// this.$router.push('orders')
-					})
-	    	},
-	    	onResize() {
-	          if (window.innerWidth < 769)
-	            this.isMobile = true;
-	          else
-	            this.isMobile = false;
-	        },
-	        toggleAll() {
-	          if (this.selected.length) this.selected = []
-	          else this.selected = this.orders.slice()
-	        },
-	        changeSort(column) {
-	          console.log(column);
-	          if (this.pagination.sortBy === column) {
-	            this.pagination.descending = !this.pagination.descending
-	          } else {
-	            this.pagination.sortBy = column
-	            this.pagination.descending = false
-	          }
-	        },
-	        close (v) {
-				this.alert = v
-			}
-	    }
-	}
+const DATE_FORMAT = 'yyyy/mm/dd hh:mm:ss.';
+const intl = new IntlService();
+
+const DetailComponent = {
+    props: {
+        dataItem: Object
+    },
+    components: {
+        'Grid': Grid
+    },
+    template: `<div>
+    <section :style='{ width: "200px", float: "left" }'>
+        <p><strong>Description:</strong> {{dataItem.description}}</p>
+        <p><strong>Device Ordered From:</strong> {{dataItem.device}}</p>
+        <p><strong>Status:</strong> <v-chip :color="dataItem.status_color" text-color="#fff">{{ dataItem.status_name }}</v-chip></p>
+    </section>
+    <section style="width: 400px; padding-left: 100px;">
+        <v-textarea
+          solo
+          name="input-7-4"
+          label="Instructions"
+          :value="dataItem.instructions"
+        ></v-textarea>
+    </section>
+    <section style="position: relative; left: 40em; top:-13em;">
+        <router-link :to="dataItem.route">
+            <v-btn class="ma-2" tile outlined color="#8F0236" text-color="#fff">
+              <v-icon left>remove_red_eye</v-icon> View Order
+            </v-btn>
+        </router-link>
+    </section>
+    </div>`
+};
+
+Vue.component('Grid', Grid);
+Vue.component('pdfexport', GridPdfExport );
+Vue.component('toolbar', GridToolbar);
+Vue.component('dropdownlist', DropDownList);
+Vue.component('intl', IntlProvider);
+Vue.component('localization', LocalizationProvider);
+
+export default{
+    name: "orders",
+    data: function () {
+        return {
+            
+            skip: 0,
+            take: 20,
+            sort: [
+                { field: 'order_id', dir: 'desc' }
+            ],
+            group: [
+                { field: 'category' }
+            ],
+            filter: null,
+            dataResult: [],
+            orders: [],
+            locales:  [
+                {
+                    language: 'en-US',
+                    locale: 'en'
+                },
+            ],
+            currentLocale: null,
+            sortable: true,
+            filterable: true,
+            groupable: true,
+            reorderable: true,
+            detailComponent: DetailComponent,
+            columnMenu: true,
+            columns: [
+                { field: "delivery_datetime", title: "Delivery DateTime", filter: "date", width: "250px"},
+                { field: "destination", title: "To", filter: "text", width: "280px" },
+                { field: "origin", title: "From", filter: "text", width: "280px"},
+                { field: "package_price", title: "Amount In Ksh", filter: "numeric", width: "200px" },
+                { field: "name", title: "Pakcage Name", filter: "text", width: "200px" },
+                { field: "distance", title: "Distance In Kms", filter: "numeric", width: "200px"},
+                { field: "stops_count", title: "No. of Stops", filter: "numeric", width: "200px" },
+                { field: "order_id", title: "Order Id", title: "ID", width: "90px", locked: "true"},
+            ]
+        };
+    },
+    methods: {
+        createAppState: function(dataState) {
+            this.take = dataState.take;
+            this.skip = dataState.skip;
+            if (dataState.group) {
+                dataState.group.map(group => group.aggregates = this.aggregates);
+            }
+            this.group = dataState.group;
+            this.filter = dataState.filter;
+            this.sort = dataState.sort;
+        },
+        dataStateChange (event) {
+            this.createAppState(event.data);
+            this.dataResult = process(this.orders, {
+                skip: this.skip,
+                take: this.take,
+                sort: this.sort,
+                filter: this.filter,
+                group: this.group
+            });
+        },
+        expandChange (event) {
+            const isExpanded =
+                event.dataItem.expanded === undefined ?
+                    event.dataItem.aggregates : event.dataItem.expanded;
+
+                    let status = ''
+                    let status_color = ''
+                    if (event.dataItem.status === 0) {
+                        status = 'Unassigned'
+                        status_color = 'red darken-4'
+                    }else if(event.dataItem.status === 1){
+                        status = 'Accepted'
+                        status_color = 'indigo'
+                    }else if(event.dataItem.status === 2){
+                        status = 'Picked Up'
+                        status_color = 'teal'
+                    }else if(event.dataItem.status === 3){
+                        status = 'In Transit'
+                        status_color = 'cyan'
+                    }else if(event.dataItem.status === 4){
+                        status = 'Completed'
+                        status_color = 'green'
+                    }else if(event.dataItem.status === 5){
+                        status = 'Cancelled'
+                        status_color = 'red'
+                    }
+            event.dataItem.status_name = status
+            event.dataItem.status_color = status_color
+            event.dataItem.route = 'view_order/'+event.dataItem.order_id
+
+            Vue.set(event.dataItem, 'expanded', !isExpanded);
+        },
+        exportExcel () {
+            saveExcel({
+                data: this.orders,
+                fileName: "myVolantOrdersFile",
+                columns: this.columns
+            });
+        },
+        exportPDF () {
+            const tempSort = this.sort; 
+            this.sort = null;
+            this.$nextTick(()=>{
+               (this.$refs.gridPdfExport).save(this.orders);
+                this.sort = tempSort;
+            })
+        },
+        pageChangeHandler: function(event) {
+            this.skip = event.page.skip;
+            this.take = event.page.take;
+        },
+        columnReorder: function(options) {
+            this.columns = options.columns;
+        },
+        dropDownChange: function (e) {
+             this.currentLocale = e.target.value;
+        },
+        processOrders(orders, dataState){
+            console.log(orders);
+            // this.dataResult = process(orders, dataState);
+            this.dataResult = process(orders, dataState);
+
+            console.log(this.dataResult)
+        },
+        vieworder: function(e){
+            console.log('clicked')
+        },
+        // vieworder(id){
+        //   let nextUrl = this.$route.params.nextUrl
+        //   this.$router.push((nextUrl != null ? nextUrl : 'view_order/'+id))
+        // },
+    },
+    created() {
+        this.currentLocale = this.locales[0];
+        const dataState = {
+            skip: this.skip,
+            take: this.take,
+            sort: this.sort,
+            group: this.group
+        };
+
+        this.user = JSON.parse(localStorage.getItem('volant.user'))
+        let user_id = this.user.id
+
+        axios.defaults.headers.common['Content-Type'] = 'application/json'
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('volant.jwt')
+        // let orders = []
+        axios.post(`/api/getorders`, {user_id: user_id}).then(response => {
+        let data = []
+        Object.values(response.data).forEach((value) => {
+          data.push(value);
+          this.orders.push(value);
+          this.loading = false
+        })
+        this.processOrders(data, dataState)
+        })
+    },
+}
 </script>

@@ -1,6 +1,44 @@
-@extends("dashboard.includes.main")
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="csrf-token" content="{{ csrf_token() }}" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {{-- <link rel="shortcut icon" href="http://testlayout.net/admin/assets/dist/img/ico/favicon.png" type="image/x-icon"> --}}
 
-@section("content")
+
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/gif/jpg" href="/images/logo.jpg">
+	<title>Volant Co | Dashboard</title>
+
+	<!-- Global stylesheets -->
+	<!-- Global stylesheets -->
+	<link href="{{url('https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900')}}" rel="stylesheet" type="text/css">
+	<link rel="stylesheet" type="text/css" href="{{ url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons') }}" />
+	<link rel="stylesheet" type="text/css" href="{{ url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/fontawesome.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ url('https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.0/dropzone.min.css') }}">
+	<link href="{{ url('assets/assets/css/material-bootstrap-wizard.css') }}" rel="stylesheet" />
+	<link href="{{ url('global_assets/css/icons/icomoon/styles.min.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url('assets/css/bootstrap_limitless.min.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url('assets/css/layout.min.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url('assets/css/components.min.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url('assets/css/colors.min.css') }}" rel="stylesheet" type="text/css">
+	<script src="{{ url('global_assets/js/main/jquery.min.js') }}"></script>
+	<!-- /global stylesheets -->
+
+</head>
+@if (session('status'))
+<div class="alert alert-success">
+	{{ session('status') }}
+</div>
+@endif
+<body>
+
+@include("dashboard.includes.nav")
 
 @if (session('success'))
 <div class="alert alert-success">
@@ -15,106 +53,167 @@
 
 <!-- Main content -->
 <br>
-<section class="content">
-	<div class="row">
-		<div class="col-sm-12 lobipanel-parent-sortable ui-sortable" data-lobipanel-child-inner-id="yy9ycBRabT">
-			<div class="panel panel-bd lobidrag lobipanel lobipanel-sortable" data-inner-id="yy9ycBRabT" data-index="0">
-				<div class="panel-heading ui-sortable-handle">
-					<div class="btn-group"> 
-						{{-- <a class="btn btn-success" href="/truck/create"> <i class="fa fa-plus"></i> Add Truck</a>  --}}
-					</div>
-					<div class="pull-right"><ul class="icons-list"><li><a title="Edit Title" data-func="editTitle" data-tooltip="Edit title" data-toggle="tooltip" data-title="Edit title" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-pencil"></i><span class="control-title"><i class="fa fa-pencil" aria-hidden="true"></i></span></a></li><li><a title="Reload" data-action="reload" data-func="reload" data-tooltip="Reload" data-toggle="tooltip" data-title="Reload" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-reload"></i><span class="control-title"></span></a></li><li><a title="Minimize" data-action="collapse" data-func="minimize" data-tooltip="Minimize" data-toggle="tooltip" data-title="Minimize" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-minus"></i><span class="control-title"></span></a></li><li><a title="Close" data-action="close" data-func="close" data-tooltip="Close" data-toggle="tooltip" data-title="Close" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-close"></i><span class="control-title"></span></a></li></ul></div></div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="panel-header">
-								<div class="col-sm-4 pull-right">
-									<div class="dataTables_length">
+<div class="content">
+	<div class="card">
+		<div class="card-header header-elements-inline">
+			<h5 class="card-title">Customers Table</h5>
+			<div class="header-elements">
+				<div class="list-icons">
+					<a class="list-icons-item" data-action="collapse"></a>
+					<a class="list-icons-item" data-action="reload"></a>
+					<a class="list-icons-item" data-action="remove"></a>
+				</div>
+			</div>
+		</div>
 
-										<a class="btn btn-default buttons-csv buttons-html5 btn-sm" tabindex="0"><span>CSV</span></a>
-										<a class="btn btn-default buttons-excel buttons-html5 btn-sm" tabindex="0"><span>Excel</span></a>
-										<a class="btn btn-default buttons-pdf buttons-html5 btn-sm" tabindex="0"><span>PDF</span></a>
-
+		<div class="card-body">
+			<table class="table table-responsive datatable-column-search-selects">
+				<thead>
+					<tr>
+						<th>#User Id</th>
+						<th>Username</th>
+						<th>Email</th>
+						<th>Phone Number</th>
+						<th>Account Type</th>
+						<th>Status</th>
+						<th class="text-center">Actions</th>
+					</tr>
+				</thead>
+				<tbody id="table">
+					@if($data)
+					@foreach($data as $customer)
+					<tr>
+						<td>
+							<span class="badge badge-success">{{ $customer->id }}</span>
+						</td>
+						<td>
+							<label>{{$customer->username}}</label>   
+						</td>
+						<td>
+							{{$customer->email}}
+						</td>
+						<td>
+							{{ $customer->phone }}
+						</td>
+						<td>
+							@if($customer->account_type == 1)
+							<span class="badge badge-warning">
+								Classic
+							</span>
+							@elseif($customer->account_type == 2)
+							<span class="badge badge-warning">
+								Business
+							</span>
+							@else
+							<span class="badge badge-warning">
+								Corporate
+							</span>
+							@endif
+						</td>
+						<td>
+							@if($customer->status == 1)
+							<span class="badge badge-success">
+								Active
+							</span>
+							@elseif($customer->status == 0)
+							<span class="badge badge-danger">
+								InActive
+							</span>
+							@endif
+						</td>
+						<td class="text-center">
+							<div class="list-icons">
+								<div class="dropdown">
+									<a href="#" class="list-icons-item" data-toggle="dropdown">
+										<i class="icon-menu9"></i>
+									</a>
+									<div class="dropdown-menu dropdown-menu-right">
+										<a class="dropdown-item" onclick="activate({{ $customer->id }})"><i class="fas fa-link"></i> Activate </a>
+										<a class="dropdown-item" onclick="deleteCustomer({{ $customer->id }})"><i class="fas fa-trash"></i> Delete </a>
 									</div>
 								</div>
 							</div>
+						</td>
+					</tr>
+					@endforeach
+					@else
+					<tr style="text-align: center;">
 
-						</div>
-						<div class="table-responsive">
-							<table class="table datatable-basic text-center datatable-highlight" style="overflow-x:auto;border-collapse: collapse; white-space: nowrap;">
-								<thead>
-									<tr>
-										<th>Username</th>
-										<th>Email</th>
-										<th>Phone Number</th>
-										<th style="padding: 44px;">Action</th>
-									</tr>
-								</thead>
-								<tbody>
-									@if($data)
-									@foreach($data as $order)
-									<tr>
-										<td>
-											<label>{{$order->name}}</label>   
-										</td>
-										<td>
-											{{$order->email}}
-										</td>
-										<td>
-											{{ $order->phone }}
-										</td>
-										<td>
-											<div class="row">
+					</tr>
+					@endif                 
+				</tbody>
+				<tfoot>
+					<tr>
+						<th>#User Id</th>
+						<th>Username</th>
+						<th>Email</th>
+						<th>Phone Number</th>
+						<th>Account Type</th>
+						<th>Status</th>
+						<td></td>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+	</div>
+</div> <!-- /.content -->
 
-												{!! Form::open(['action'=> ['CustomerController@destroy', $order->id], 'method'=>'POST']) !!}
-												<button href="/customers/{{$order->id}}/destroy" class="btn btn-danger btn-xs pull-right" data-toggle="tooltip" data-placement="right" title="Delete">
-													<i class="fa fa-trash-o" aria-hidden="true"></i>
-												</button>
-												{{Form::hidden('_method', 'DELETE')}}
+<script type="text/javascript">
+	function activate(id){
+    var id = id;
 
-												{!! Form::close() !!}
-												
+    jQuery.ajax({
+      url:'{{ route('customer.activate') }}',
+      method:"POST",
+      data:{id: id, _token: '{{csrf_token()}}'},
+      success:function(result)
+      {
+        swal('Customer'+result, "has been Activated successfully!", "success").then(function(){ 
+          location.reload()
+        }
+        );
+      },
+      error : function(){alert("Something Went Wrong.");},
+    });
+  }
+</script>
 
-												<a href="/customers/show/{{$order->id}}" class="btn btn-info btn-xs" data-toggle="tooltip" data-placement="left" title="View"><i class="fa fa-eye" aria-hidden="true"></i></a>
+<script>
+  function deleteCustomer(id){
+    var id = id;
 
-											</div>
-										</td>
-									</tr>
-									@endforeach
-									@else
-									<tr style="text-align: center;">
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, you will not be able to recover this customer!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        jQuery.ajax({
+          url:'{{ route('customer.delete') }}',
+          method:"POST",
+          data:{id: id, _token: '{{csrf_token()}}'},
+          success:function(result)
+          {
+            swal('Customer'+result, "has been deleted!", {
+              icon: "success",
+            }).then(function(){ 
+              location.reload()
+            }
+            );
+          },
+          error : function(){alert("Something Went Wrong.");},
+        });
+      } else {
+        swal("Customer is safe!").then(function(){ 
+          location.reload()
+        }
+        );
+      }
+    });
+  }
+</script>
 
-									</tr>
-									@endif                 
-								</tbody>
-							</table>
-						</div>
-
-                {{-- <div class="page-nation text-right">
-                    <ul class="pagination pagination-large">
-                        <li class="disabled"><span>«</span></li>
-                        <li class="active"><span>1</span></li>
-                        <li><a href="http://testlayout.net/admin/view_truck.php#">2</a></li>
-                        <li class="disabled"><span>...</span></li><li>
-                        </li><li><a rel="next" href="http://testlayout.net/admin/view_truck.php#">Next</a></li>
-                    </ul>
-                  </div> --}}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section> <!-- /.content -->
-
-      </div>
-      <!-- /content area -->
-
-    </div>
-    <!-- /main content -->
-
-  </div>
-  <!-- /page container -->
-
-</body>
-</html>
-
-
-@endsection
+@include("dashboard.includes.footer")

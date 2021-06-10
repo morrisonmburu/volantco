@@ -1,11 +1,99 @@
 function myMap() {
+
+const mapStyle = [
+  {
+    elementType: 'geometry',
+    stylers: [
+      {
+        color: '#eceff1'
+      }
+    ]
+  },
+  {
+    elementType: 'labels',
+    stylers: [
+      {
+        visibility: 'on'
+      }
+    ]
+  },
+  {
+    featureType: 'administrative',
+    elementType: 'labels',
+    stylers: [
+      {
+        visibility: 'on'
+      }
+    ]
+  },
+  {
+        "featureType": "administrative.country",
+        "elementType": "geometry.stroke",
+        "stylers": [
+            {
+                "visibility": "on"
+            },
+            {
+                "color": "#839192"
+            }
+        ]
+    },
+  {
+    featureType: 'road',
+    elementType: 'geometry',
+    stylers: [
+      {
+        color: '#cfd8dc'
+      }
+    ]
+  },
+  {
+    featureType: 'road',
+    elementType: 'geometry.stroke',
+    stylers: [
+      {
+        visibility: 'on'
+      }
+    ]
+  },
+  {
+    featureType: 'road.local',
+    stylers: [
+      {
+        visibility: 'on'
+      }
+    ]
+  },
+  {
+    featureType: 'water',
+    stylers: [
+      {
+        color: '#46bcec'
+      }
+    ]
+  }
+];
+
   var directionsService = new google.maps.DirectionsService();
-  var directionsRenderer = new google.maps.DirectionsRenderer();
+  var directionsRenderer = new google.maps.DirectionsRenderer({suppressMarkers: true});
+
+  const NAIROBI_METROPOLITAN_BOUNDS = {
+	  north: -0.9495592,
+	  south: -1.5404732,
+	  west: 36.530552,
+	  east: 37.2369496
+	};
 
   var mapProp= {
-	center:new google.maps.LatLng(-1.28333,36.81667),
-	disableDefaultUI: true, 
+	center:new google.maps.LatLng(-1.2832207,36.8198298),
+	disableDefaultUI: true,
+	styles:mapStyle, 
+	restriction: {
+      latLngBounds: NAIROBI_METROPOLITAN_BOUNDS,
+      strictBounds: true
+    },
 	zoom:12,
+	mapTypeId: "roadmap"
   };
 
   infoWindow = new google.maps.InfoWindow;
@@ -32,12 +120,12 @@ function myMap() {
 			
 	var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
+	map.setTilt(180);
+
 	var card = document.getElementById('pac-card');
 	var input = document.getElementById('pac-input');
 	var input2 = document.getElementById('pac-input2');
-	var types = document.getElementById('type-selector');
-	var strictBounds = document.getElementById('strict-bounds-selector');
-	map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
+	// map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
 
 	//bounds
 	var boundlat1 = 0;
@@ -47,8 +135,11 @@ function myMap() {
 	var boundlong2 = 0;
 
 	var point = [];
-	var stopoverlocation = [];
+	var namepoint = [];
+	var locations = [];
 	
+	var origin = '';
+	var destination = ''; 
 	//Autocomplete
 
 	var autocomplete = new google.maps.places.Autocomplete(input);
@@ -60,9 +151,12 @@ function myMap() {
 	autocomplete.bindTo('bounds', map);
 	autocomplete2.bindTo('bounds', map);
 
+    autocomplete.setOptions({strictBounds: true});
+    autocomplete2.setOptions({strictBounds: true});
+
 	// Set the data fields to return when the user selects a place.
-	autocomplete.setFields(['address_components', 'geometry', 'icon', 'name']);
-	autocomplete2.setFields(['address_components', 'geometry', 'icon', 'name']);
+	autocomplete.setFields(['place_id', 'address_components', 'geometry', 'icon', 'name']);
+	autocomplete2.setFields(['place_id', 'address_components', 'geometry', 'icon', 'name']);
 
 	var infowindow = new google.maps.InfoWindow();
 	var infowindow2 = new google.maps.InfoWindow();
@@ -73,19 +167,29 @@ function myMap() {
 
 	//origin marker
 
+	var icon = {
+	    url: "/images/signs.png", // url
+	    scaledSize: new google.maps.Size(60, 60), // scaled size
+	};
+
 	var marker = new google.maps.Marker({
 		map: map,
-		anchorPoint: new google.maps.Point(0, -29)
+		anchorPoint: new google.maps.Point(0, -29),
+		icon: icon
 	});
 
 	//Destination Marker
 
+
+	var icon2 = {
+	    url: "/images/placeholder.png", // url
+	    scaledSize: new google.maps.Size(60, 60), // scaled size
+	};
+
 	var marker2 = new google.maps.Marker({
 		map: map,
 		anchorPoint: new google.maps.Point(0, -29),
-		icon: {
-			url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
-		}
+		icon: icon2
 	});
 
 	autocomplete.addListener('place_changed', function() {
@@ -102,10 +206,10 @@ function myMap() {
 		// If the place has a geometry, then present it on a map.
 		if (place.geometry.viewport) {
 			map.fitBounds(place.geometry.viewport);
-			map.setZoom(15); 
+			map.setZoom(12); 
 		} else {
 			map.setCenter(place.geometry.location);
-			map.setZoom(15);  // Why 17? Because it looks good.
+			map.setZoom(12);  // Why 17? Because it looks good.
 		}
 
 		marker.setPosition(place.geometry.location);
@@ -120,6 +224,17 @@ function myMap() {
             ].join(' ');
 		}
 
+		origin = place.name
+
+		locations.push({
+			lat: place.geometry.location.lat(),
+			lng: place.geometry.location.lng(),
+			name: place.name+address,
+			is_stopover: 0,
+			is_destination: 0,
+			place_id: place.place_id,
+		});
+
 		$('#origin').val(place.name+address);
 
 		boundlat1 = place.geometry.location.lat()
@@ -129,6 +244,10 @@ function myMap() {
 		infowindowContentOrigin.children['place-name'].textContent = place.name;
 		infowindowContentOrigin.children['place-address'].textContent = address;
 		infowindow.open(map, marker);
+
+		marker.addListener('click', function() {
+          infowindow.open(map, marker);
+        });
 		});
 
 		autocomplete2.addListener('place_changed', function() {
@@ -146,10 +265,10 @@ function myMap() {
 		// If the place has a geometry, then present it on a map.
 		if (place.geometry.viewport) {
 			map.fitBounds(place.geometry.viewport);
-			map.setZoom(15);
+			map.setZoom(12);
 		} else {
 			map.setCenter(place.geometry.location);
-			map.setZoom(15);  // Why 17? Because it looks good.
+			map.setZoom(12);  // Why 17? Because it looks good.
 		}
 		marker2.setPosition(place.geometry.location);
 		marker2.setVisible(true);
@@ -164,18 +283,34 @@ function myMap() {
  
 			}
 
-		$('#destination').val(place.name+address);
+		destination = place.name
 
+		locations.push({
+			lat: place.geometry.location.lat(),
+			lng: place.geometry.location.lng(),
+			name: place.name+address,
+			is_stopover: 0,
+			is_destination: 1,
+			place_id: place.place_id,
+		});
+
+		$('#destination').val(place.name+address);
+		$('#stopoverlocation').val(JSON.stringify(locations)); 
+		
 		boundlat2 = place.geometry.location.lat()
 		boundlong2 = place.geometry.location.lng()
 
-		infowindowContentDestination.children['place-icon'].src = place.icon;
-		infowindowContentDestination.children['place-name'].textContent = place.name;
-		infowindowContentDestination.children['place-address'].textContent = address;
+		infowindowContentDestination.children['place-icon2'].src = place.icon;
+		infowindowContentDestination.children['place-name2'].textContent = place.name;
+		infowindowContentDestination.children['place-address2'].textContent = address;
 		infowindow2.open(map, marker2);
 
-		// calculateRoute();
-		calculateDistance();
+		marker2.addListener('click', function() {
+          infowindow2.open(map, marker2);
+        });
+
+		calculateRoute();
+		calculateDistance(origin, destination);
 		});
 
 		var defaultBounds = new google.maps.LatLngBounds(
@@ -191,6 +326,8 @@ function myMap() {
 
 		autocomplete3 = new google.maps.places.Autocomplete(input);
 		autocomplete3.bindTo('bounds', map);
+
+		autocomplete3.setFields(['place_id', 'address_components', 'geometry', 'icon', 'name']);
 
 		autocomplete3.addListener('place_changed', function() {
 		var place = autocomplete3.getPlace();
@@ -213,32 +350,45 @@ function myMap() {
               (place.address_components[2] && place.address_components[2].short_name || '')
             ].join(' ');
 
-            loc = place.geometry.location.lat()+' ,'+place.geometry.location.lng()+' ,'+place.name+address; 
-			}
-
-		point.push(geometrylocation);
-		stopoverlocation.push(loc);
+            loc = 'lat:'+place.geometry.location.lat()+' ,'+'lng:'+place.geometry.location.lng()+' ,'+'name:'+place.name+address;
+            point.push(geometrylocation);
+			namepoint.push(address) 
+		}
+		locations.push({
+			lat: place.geometry.location.lat(),
+			lng: place.geometry.location.lng(),
+			name: place.name+address,
+			is_stopover: 1,
+			is_destination: 0,
+			place_id: place.place_id,
+		});
 
 		// console.log(JSON.stringify(stopoverlocation));
 
-		$('input:hidden[name=stopoverlocation]').val(JSON.stringify(stopoverlocation)); 
+		$('#stopoverlocation').val(JSON.stringify(locations)); 
 
-		calculateRoute(point);
+		calculateRoute(point, namepoint);
 		});
 
 		//calculating Route
+
+		var icon2 = {
+		    url: "/images/placeholder.png", // url
+		    scaledSize: new google.maps.Size(60, 60), // scaled size
+		};
 
 		function calculateRoute(){
 				var waypts = [];
 		        // var array = point;
 		        var checkboxArray = point		        
-		        console.log(checkboxArray);
-		        for (var i = 0; i < checkboxArray.length; i++) {
+		        // console.log(checkboxArray);
+		        for (var i = 0; i < checkboxArray.length && namepoint.length; i++) {
 		          if (checkboxArray[i] != "") {
 		            waypts.push({
 		              location: checkboxArray[i],
 		              stopover: true
 		            });
+		            createMarker(checkboxArray[i], namepoint[i]);
 		          }
 		        }
 
@@ -251,7 +401,7 @@ function myMap() {
 				travelMode: google.maps.TravelMode.DRIVING
 			};
 
-			console.log(request);
+			// console.log(request);
 
 			directionsService.route(request, function (response, status) {
 
@@ -264,7 +414,23 @@ function myMap() {
 			});
 		}
 
+		function createMarker(latlng, name) {
 
+		    var marker3 = new google.maps.Marker({
+		        position: latlng,
+		        map: map
+		    });
+
+		    var contentString = '<div id="infowindow-content-stop"><span id="place-name3">'+name+'</span><br></div>';
+    		
+    		var infowindow3 = new google.maps.InfoWindow({
+	          content: contentString
+	        });
+
+		    marker3.addListener('click', function() {
+	          infowindow3.open(map, marker3);
+	        });
+		}
 
 
 		}
@@ -277,20 +443,19 @@ function myMap() {
 		alert("Error: The Geolocation service failed., Error: Your browser doesn\'t support geolocation.");
 		}
 
-		function calculateDistance(){
-		var origin = $('#origin').val();
-		console.log(origin);
-		var destination = $('#destination').val();
+		function calculateDistance(origin, destination){
+		var origin = origin
+		var destination = destination
 		var service = new google.maps.DistanceMatrixService();
 		service.getDistanceMatrix(
 
 			{
 				origins: [origin],
 				destinations: [destination],
-				travelMode: google.maps.TravelMode.DRIVING,
-				unitSystem: google.maps.UnitSystem.metric,
-				avoidHighways: false,
-				avoidTolls: false
+				travelMode: 'DRIVING',
+				unitSystem: google.maps.UnitSystem.IMPERIAL,
+				avoidHighways: true,
+				avoidTolls: true
 			}, callback);
 		}
 
@@ -312,7 +477,7 @@ function myMap() {
 					var duration_text = duration.text;
 					var duration_value = duration.value;
 					// $('#in_mile').text(distance_in_mile.toFixed(2));
-					$('#distance').text(distance_in_kilo.toFixed(2));
+					$('#distance').val(distance_in_kilo.toFixed(2));
 					$('#duration_text').val(duration_value/60);
 					$('#duration_value').text(duration_value);
 					// $('#from').text(origin);

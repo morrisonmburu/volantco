@@ -15,14 +15,17 @@ class CreateDispatchTable extends Migration
     {
         Schema::create('dispatches', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('dispatchno')->unique();
+            $table->uuid('dispatchno')->unique();
             $table->integer('orderNo');
+            $table->integer('driverNo');
             $table->string('customerName')->nullable($value = false);
-            $table->string('courierName')->nullable($value = false);
-            $table->string('truckNo')->nullable($value = false);
+            $table->string('DriverName')->nullable($value = false);
+            $table->string('DriverPhone')->nullable($value = false);
+            $table->string('plateNumber')->nullable($value = false);
             $table->string('from')->nullable($value = false);
             $table->string('to')->nullable($value = false);
-            $table->string('pickup')->nullable($value = false);
+            $table->string('package')->nullable($value = false);
+            $table->integer('status')->default(0);
             $table->string('amount');
             $table->timestamps();
         });

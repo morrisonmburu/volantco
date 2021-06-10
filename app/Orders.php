@@ -14,9 +14,9 @@ class Orders extends Model
      *
      * @var array
      */
-    public $timestamps = false;
+    public $timestamps = true;
     
     protected $fillable = [
-        'to', 'from', 'package', 'info', 'time', 'mark', 'cancel', 'email', 'phone', 'instructions'
+        'category_id', 'user_id', 'sender_name', 'sender_phone', 'recipient_name', 'recipient_phone', 'truck_type_id', 'package_price', 'distance', 'stops_count', 'description', 'pickup_datetime', 'instructions', 'payment_id', 'status', 'device'
     ];
 }

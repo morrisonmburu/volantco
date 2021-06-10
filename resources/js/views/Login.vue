@@ -1,18 +1,47 @@
+<style type="text/css">
+#login{
+	width: 550px;
+}
+@media only screen and (max-width: 640px) {
+	#login{
+		width: 100%;
+	}
+}
+</style>
 <template>
 	<v-container fluid fluid-height>
+	<v-snackbar
+      v-model="snackbar"
+      :color="color"
+      multi-line
+      :timeout="timeout"
+      left
+      top
+      vertical
+    >
+      {{ text }}
+      <v-btn
+        dark
+        text
+        @click="snackbar = false"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
 	<div class="row">
 		<div class="col-md-2"></div>
 		<div class="col-md-8">
 			<v-toolbar
-			color="info"
+			color="#9C0520"
 			dark
 			flat
 			align-center
+			style="margin-top:-25%;"
 			>
-			<v-toolbar-title class="text-center">Login Form</v-toolbar-title>
+			<v-toolbar-title class="text-center" style="margin-left:30%;">Login To Volant</v-toolbar-title>
 			<v-spacer></v-spacer>
 			</v-toolbar>
-			<v-card class="elevation-12 d-inline-block mx-sm-auto">
+			<v-card class="elevation-12 d-inline-block mx-sm-auto" id="login">
 				<div class="col-md-12 ml-auto mr-auto">
 
 					<v-alert
@@ -25,7 +54,7 @@
 					icon="mdi-cloud-alert"
 					@input="close"
 					class="mx-sm-auto"
-					width="330px"
+					width="340px"
 					align-center
 					>
 					Yikes, seems your email or password is wrong, please try again
@@ -45,7 +74,7 @@
 				Your credentials are correct, loggin in now ...
 			</v-alert>
 
-			<card type="login" plain>
+		
 				<div slot="header" class="logo-container">
 					<img v-lazy="'img/now-logo.png'" alt="" />
 				</div>
@@ -55,34 +84,41 @@
 				ref="form"
 				>
 
-				<fg-input
-				class="input-lg"
-				addon-left-icon="now-ui-icons objects_globe"
-				placeholder="Email ..."
-				v-model="email"
-				name="email"
-				type="email"
-				:rules="emailRules"
-				required
-				>
-			</fg-input>
+				<v-text-field
+					prepend-icon="email"
+					v-model="email"
+					label="Email Address"
+					name="email"
+					type="email"
+					:rules="emailRules"
+					required
+					outlined
+					dense
+					color="#9C0520"
+					>
+				</v-text-field>
 
-			<fg-input
-				class="input-lg"
-				addon-left-icon="now-ui-icons objects_key-25"
-				placeholder="Password ..."
+			<v-text-field
+				prepend-icon="vpn_key"
+				label="Password"
 				v-model="password"
 				name="password"
-				type="password"
 				:rules="passwordRules"
 				required
+				outlined
+				dense
+				color="#9C0520"
+				:append-icon="show1 ? 'mdi-eye-off' : 'mdi-eye'"
+				@click:append="show1 = !show1"
+				:type="show1 ? 'text' : 'password'"
 			>
-		</fg-input>
+			</v-text-field>
 
-		<button  
+		<button
 		@click="login"
-		style="color:#fff;"
-		class="btn btn-info btn-round btn-lg btn-block"
+		style="color:#fff; background-color:#9C0520;"
+		color="#9C0520"
+		class="btn btn-round btn-lg btn-block"
 		>
 		<div v-if="loading">
 			<v-progress-circular
@@ -91,7 +127,7 @@
 			color="white"
 			indeterminate
 			></v-progress-circular>
-			Login
+			Loging in ...
 		</div>
 		<div v-else>
 			Login
@@ -99,22 +135,23 @@
 
 		</button>
 
-		<div class="pull-left">
+		<div class="container" style="margin-left:25%;margin-top:1%;">
 			<h6>
-				<a href="#pablo" class="link footer-link">Create Account</a>
+				<a href="/volantuser/reset-password" class="link footer-link" style="font-size:15px;">Forgot password?</a>
 			</h6>
 		</div>
-		<div class="pull-right">
+
+		<div class="container" style="margin-left:15%;margin-top:0.5%;">
 			<h6>
-				<a href="#pablo" class="link footer-link">Need Help?</a>
+				<span style="color:grey;">Don't have an Account? </span><a href="/volantuser/register" class="link footer-link">Create An Account</a>
 			</h6>
 		</div>
 
 
 		</v-form>
-		</card>
+
 		</div>
-		</v-card>	
+		</v-card>
 		</div>
 	<div class="col-md-2"></div>
 	</div>
@@ -140,13 +177,18 @@ export default{
 		alert: false,
 		success: false,
 		loading: false,
+		color: 'cyan darken-2',
+        mode: '',
+        snackbar: false,
+        text: '',
+        timeout: 6000,
+        show1: false,
 		emailRules: [
 		v => !!v || 'Your Email is required',
 		v => /.+@.+/.test(v) || 'E-mail must be valid',
 		],
 		passwordRules: [
 		v => !!v || 'Your password is required',
-		v => v.length >= 8 || 'Your password is too short',
 		]
 	}),
 	methods: {
@@ -160,18 +202,27 @@ export default{
 					let email = this.email
 					let password = this.password
 
-					this.success = true
+					// this.success = true
 					axios.post('/api/login', {email, password}).then(response => {
-						let user = response.data.user
-						let is_admin = user.is_admin
 
-						localStorage.setItem('volant.user', JSON.stringify(user))
-						localStorage.setItem('volant.jwt', response.data.token)
+						if (response.data.error == "Unauthorized") {
+							this.alert = true
+							this.loading = false
+						}else{
+							this.snackbar = true
+							this.text = "Your credentials are correct, loggin in now ..."
+							let user = response.data.user
+							let is_admin = user.is_admin
 
-						if (localStorage.getItem('volant.jwt') != null) {
-							this.$emit('loggedIn')
-							let nextUrl = this.$route.params.nextUrl
-							window.location.replace("http://volantco.net/volantuser/home")
+							localStorage.setItem('volant.user', JSON.stringify(user))
+							localStorage.setItem('volant.jwt', response.data.token)
+
+							if (localStorage.getItem('volant.jwt') != null) {
+								this.$emit('loggedIn')
+								let nextUrl = this.$route.params.nextUrl
+								window.location.replace("http://volantltd.com/volantuser/home")
+	                            // this.$router.push((nextUrl != null ? nextUrl : 'home'))
+							}
 						}
 					});
 				}

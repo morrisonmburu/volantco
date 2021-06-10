@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
+use Illuminate\Http\Request;
+use App\Admins;
+use Storage;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+// use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -21,7 +22,39 @@ class RegisterController extends Controller
     |
     */
 
-    use RegistersUsers;
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
+
+    /**
+     *
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+
+    protected function register(Request $request)
+    {
+
+      $this->validate($request, array(
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:admins'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+      ));
+
+        // dd($request);
+
+        $Admin = new Admins();
+
+        $Admin->name = $request->name;
+        $Admin->email = $request->email;
+        $Admin->password = Hash::make($request->password);
+
+        $Admin->save();
+
+        return redirect()->intended('/dashboard');
+    }
 
     /**
      * Where to redirect users after registration.
@@ -38,35 +71,6 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $this->middleware('guest:admin')->except('logout');
     }
 }

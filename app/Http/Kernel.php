@@ -38,10 +38,20 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
+            \App\Http\Middleware\EncryptCookies::class,
+            \Illuminate\Session\Middleware\StartSession::class,
             // 'throttle:60,1',
             'bindings',
             // 'auth:volantusers',
         ],
+
+        // 'rider-api' => [
+        //     \App\Http\Middleware\EncryptCookies::class,
+        //     \Illuminate\Session\Middleware\StartSession::class,
+        //     // 'throttle:60,1',
+        //     'bindings',
+        //     'auth:rider-api',
+        // ]
     ];
 
     /**
@@ -61,6 +71,8 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
+        'isAdmin' => \App\Http\Middleware\AdminMiddleware::class,
+        'clearance' => \App\Http\Middleware\ClearanceMiddleware::class,
     ];
 
     /**

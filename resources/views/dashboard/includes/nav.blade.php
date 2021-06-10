@@ -1,216 +1,301 @@
+<!-- Main navbar -->
+<div class="navbar navbar-expand-md navbar-light fixed-top">
 
-	<div class="navbar navbar-inverse">
-		<div class="navbar-header">
-			<a class="navbar-brand" href="index">VOLANT COURIERS</a>
-
-			<ul class="nav navbar-nav visible-xs-block">
-				<li><a data-toggle="collapse" data-target="#navbar-mobile"><i class="icon-tree5"></i></a></li>
-				<li><a class="sidebar-mobile-main-toggle"><i class="icon-paragraph-justify3"></i></a></li>
-			</ul>
+	<!-- Header with logos -->
+	<div class="navbar-header navbar-dark d-none d-md-flex align-items-md-center">
+		<div class="navbar-brand navbar-brand-md">
+			<a href="/dashboard" class="d-inline-block">
+				<img src="/images/logo.jpg" alt="">
+			</a>
+			<a style="padding-left: 20px;" href="/dashboard" class="d-inline-block">
+				<img src="/images/logo_admin.png" alt="">
+			</a>
 		</div>
 
-		<div class="navbar-collapse collapse" id="navbar-mobile">
-			<ul class="nav navbar-nav">
-				<li><a class="sidebar-control sidebar-main-toggle hidden-xs"><i class="icon-paragraph-justify3"></i></a></li>
-			</ul>
-
-			<p class="navbar-text"><span class="label bg-success">Online</span></p>
-
-			<ul class="nav navbar-nav navbar-right">
-				<li class="dropdown language-switch">
-					<a class="dropdown-toggle" data-toggle="dropdown">
-						<img src="assets/images/flags/gb.png" class="position-left" alt="">
-						English
-						<span class="caret"></span>
-					</a>
-
-					<ul class="dropdown-menu">
-						
-						<li><a class="english"><img src="assets/images/flags/gb.png" alt=""> English</a></li>
-					</ul>
-				</li>
-
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<i class="icon-bubbles4"></i>
-						<span class="visible-xs-inline-block position-right">Messages</span>
-						<span class="badge bg-warning-400">2</span>
-					</a>
-					
-					<div class="dropdown-menu dropdown-content width-350">
-						<div class="dropdown-content-heading">
-							Messages
-							<ul class="icons-list">
-								<li><a href="#"><i class="icon-compose"></i></a></li>
-							</ul>
-						</div>
-
-						<ul class="media-list dropdown-content-body">
-							<li class="media">
-								<div class="media-left">
-									<img src="assets/images/placeholder.jpg" class="img-circle img-sm" alt="">
-									<span class="badge bg-danger-400 media-badge">5</span>
-								</div>
-
-								<div class="media-body">
-									<a href="#" class="media-heading">
-										<span class="text-semibold">Morris Mburu</span>
-										<span class="media-annotation pull-right">04:58</span>
-									</a>
-
-									<span class="text-muted">Messages goes here...</span>
-								</div>
-							</li>
-						</ul>
-
-						<div class="dropdown-content-footer">
-							<a href="#" data-popup="tooltip" title="All messages"><i class="icon-menu display-block"></i></a>
-						</div>
-					</div>
-				</li>
-
-				<li class="dropdown dropdown-user">
-					<a class="dropdown-toggle" data-toggle="dropdown">
-						<img src="assets/images/placeholder.jpg" alt="">
-						<span>{{-- {{ Auth::user()->name }} --}}</span>
-						<i class="caret"></i>
-					</a>
-
-					<ul class="dropdown-menu dropdown-menu-right">
-						{{-- <li><a href="#"><i class="icon-user-plus"></i> My profile</a></li> --}}
-						{{-- <li><a href="#"><i class="icon-coins"></i> My balance</a></li> --}}
-						<li><a href="#"><span class="badge bg-teal-400 pull-right">58</span> <i class="icon-comment-discussion"></i> Messages</a></li>
-						<li class="divider"></li>
-						{{-- <li><a href="#"><i class="icon-cog5"></i> Account settings</a></li> --}}
-						<li><a href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();"><i class="icon-switch2"></i> Logout</a>                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                        @csrf
-                                    </form></li>
-					</ul>
-				</li>
-			</ul>
+		<div class="navbar-brand navbar-brand-xs">
+			<a href="/dashboard" class="d-inline-block">
+				<img src="/images/logo.jpg" alt="">
+			</a>
 		</div>
 	</div>
-	<!-- /main navbar -->
-	<!-- Page container -->
-	<div class="page-container">
+	<!-- /header with logos -->
+	
+	<!-- Mobile controls -->
+	<div class="d-flex flex-1 d-md-none">
+		<div class="navbar-brand mr-auto">
+			<a href="/dashboard" class="d-inline-block">
+				<img src="/images/logo.jpg" alt="">
+				VOLANT LTD
+			</a>
+		</div>	
 
-		<!-- Page content -->
-		<div class="page-content">
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-mobile">
+			<i class="icon-tree5"></i>
+		</button>
 
-			<!-- Main sidebar -->
-			<div class="sidebar sidebar-main">
-				<div class="sidebar-content">
+		<button class="navbar-toggler sidebar-mobile-main-toggle" type="button">
+			<i class="icon-paragraph-justify3"></i>
+		</button>
+	</div>
+	<!-- /mobile controls -->
 
-					<!-- User menu -->
-					<div class="sidebar-user">
-						<div class="category-content">
-							<div class="media">
-								<a href="#" class="media-left"><img src="assets/images/placeholder.jpg" class="img-circle img-sm" alt=""></a>
-								<div class="media-body">
-									<span class="media-heading text-semibold">{{-- {{ Auth::user()->name }} --}}</span>
-									<div class="text-size-mini text-muted">
-										<i class="icon-pin text-size-small"></i> &nbsp;Nairobi, Kenya
-									</div>
-								</div>
 
-								<div class="media-right media-middle">
-									<ul class="icons-list">
-										<li>
-											<a href="#"><i class="icon-cog3"></i></a>
-										</li>
-									</ul>
-								</div>
-							</div>
+	<!-- Navbar content -->
+	<div class="collapse navbar-collapse" id="navbar-mobile">
+		<ul class="navbar-nav">
+			<li class="nav-item">
+				<a href="#" class="navbar-nav-link sidebar-control sidebar-main-toggle d-none d-md-block">
+					<i class="icon-paragraph-justify3"></i>
+				</a>
+			</li>
+		</ul>
+
+		<span class="badge badge-warning badge-pill"><span id="unassign"></span> orders Unassigned</span>
+		<span class="badge badge-info badge-pill ml-md-3"><span id="pick"></span> orders Picked Up</span>
+		<span class="badge badge-success badge-pill ml-md-3 mr-md-auto"><span id="intrans"></span> orders In Transit</span>
+
+		<ul class="navbar-nav">
+			<li class="nav-item dropdown">
+				<a href="#" class="navbar-nav-link dropdown-toggle" data-toggle="dropdown">
+					<img src="/images/ke.png" class="img-flag mr-2" alt="">
+					Kenyan
+				</a>
+			</li>
+
+			<li class="nav-item dropdown">
+				<a href="#" class="navbar-nav-link dropdown-toggle caret-0" data-toggle="dropdown">
+					<i class="icon-bubbles4"></i>
+					<span class="d-md-none ml-2">Messages</span>
+					<span class="badge badge-mark border-pink-400 ml-auto ml-md-0"></span>
+				</a>
+			</li>
+
+			<li class="nav-item dropdown dropdown-user">
+					<a href="#" class="navbar-nav-link d-flex align-items-center dropdown-toggle" data-toggle="dropdown">
+						<img src="/images/logo.jpg" class="rounded-circle mr-2" height="34" alt="">
+						<span>Volant Ltd</span>
+					</a>
+
+					<div class="dropdown-menu dropdown-menu-right">
+						<a href="#" class="dropdown-item"><i class="icon-comment-discussion"></i> Messages <span class="badge badge-pill bg-indigo-400 ml-auto">58</span></a>
+						<div class="dropdown-divider"></div>
+						<a href="#" class="dropdown-item"><i class="icon-cog5"></i> Account settings</a>
+						<a href="{{ route('logout') }}"
+						onclick="event.preventDefault();
+						document.getElementById('logout-form').submit();" class="dropdown-item"><i class="icon-switch2"></i> Logout</a>
+						<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+							@csrf
+						</form>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!-- /navbar content -->
+		
+</div>
+<style type="text/css">
+	.space_top{
+		margin-top:40px;
+	}
+
+	@media only screen and (max-width: 640px) {
+		.space_top{
+			margin-top: 30px;
+		}
+	}
+</style>
+<!-- /main navbar -->
+<div class="space_top"></div>
+<!-- Page content -->
+<div class="page-content">
+
+<!-- Main sidebar -->
+<div class="sidebar sidebar-dark sidebar-main sidebar-fixed sidebar-expand-md">
+
+	<!-- Sidebar mobile toggler -->
+	<div class="sidebar-mobile-toggler text-center">
+		<a href="#" class="sidebar-mobile-main-toggle">
+			<i class="icon-arrow-left8"></i>
+		</a>
+		Main Navigation
+		<a href="#" class="sidebar-mobile-expand">
+			<i class="icon-screen-full"></i>
+			<i class="icon-screen-normal"></i>
+		</a>
+	</div>
+	<!-- /sidebar mobile toggler -->
+
+
+	<!-- Sidebar content -->
+	<div class="sidebar-content">
+
+		<!-- User menu -->
+		<div class="sidebar-user">
+			<div class="card-body">
+				<div class="media">
+					<div class="mr-3">
+						<a href="/dashboard"><img src="/images/logo.jpg" width="38" height="38" class="rounded-circle" alt=""></a>
+					</div>
+
+					<div class="media-body">
+						<div class="media-title font-weight-semibold">Volant Ltd</div>
+						<div class="font-size-xs opacity-50">
+							<i class="icon-pin font-size-sm"></i> &nbsp;Prosperity House, Westlands
 						</div>
 					</div>
-					<!-- /user menu -->
 
-
-					<!-- Main navigation -->
-					<div class="sidebar-category sidebar-category-visible">
-						<div class="category-content no-padding">
-							<ul class="navigation navigation-main navigation-accordion">
-
-								<!-- Main -->
-								<li class="navigation-header"><span>Main</span> <i class="icon-menu" title="Main pages"></i></li>
-								<li class="active"><a href="/dashboard"><i class="icon-home4"></i> <span>Dashboard</span></a></li>
-							{{-- 	<li>
-									<a href="#"><i class="icon-stack2"></i> <span>Page layouts</span></a>
-									<ul>
-										<li><a href="layout_navbar_fixed">Fixed navbar</a></li>
-										<li><a href="layout_navbar_sidebar_fixed">Fixed navbar &amp; sidebar</a></li>
-									</ul>
-								</li> --}}
-								<li>
-									<a href="/orders"><i style="font-size: 20px; padding-left: 4px; padding-right: 5px;" class="hvr-buzz-out fa fa-fw glyphicon glyphicon-paste fa-2x"></i> <span>Orders</span></a></li>
-									<li>
-									<a href="/dispatch/"><i style="font-size: 20px; padding-left: 4px; padding-right: 5px;" class="hvr-buzz-out fa fa-fw glyphicon glyphicon-paste fa-2x"></i> <span>dispatch</span></a></li>
-									<li>
-									<a href="/courier"><i class="hvr-buzz-out fa fa-user-plus fa-2x"></i> <span>Couriers</span></a></li>
-									<li>
-									<a href="/customers"><i class="fa fa-fw fa-check fa-2x"></i> <span>Customers</span></a></li>
-									<li>
-									<a href="/truck"><i class="hvr-buzz-out fa fa-fw fa-truck fa-2x"></i> <span>Trucks</span></a></li>
-
-
-								
-								<!-- /page kits -->
-
-							</ul>
-						</div>
+					<div class="ml-3 align-self-center">
+						<a href="#" class="text-white"><i class="icon-cog3"></i></a>
 					</div>
-					<!-- /main navigation -->
-
 				</div>
 			</div>
-			<!-- /main sidebar -->
+		</div>
+		<!-- /user menu -->
 
 
-			<!-- Main content -->
-			<div class="content-wrapper">
+		<!-- Main navigation -->
+		<div class="card card-sidebar-mobile">
+			<ul class="nav nav-sidebar" data-nav-type="accordion">
 
-				<!-- Page header -->
-				<div class="page-header page-header-default">
-					<div class="page-header-content">
-						<div class="page-title">
-							<h4><i class="icon-arrow-left52 position-left"></i> <span class="text-semibold">Home</span> - Dashboard</h4>
-						</div>
+				<!-- Main -->
+				<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Main</div> <i class="icon-menu" title="Main"></i></li>
+				<li class="nav-item {{ (Route::is('dashboard') ? 'nav-item active' : '') }}">
+					<a href="/dashboard" class="nav-link">
+						<i class="icon-home4"></i>
+						<span>
+							Dashboard
+						</span>
+					</a>
+				</li>
 
-						<div class="heading-elements">
-							<div class="heading-btn-group">
-								<a href="#" class="btn btn-link btn-float has-text"><i class="icon-bars-alt text-primary"></i><span>Statistics</span></a>
-								<a href="#" class="btn btn-link btn-float has-text"><i class="icon-calculator text-primary"></i> <span>Invoices</span></a>
-								<a href="#" class="btn btn-link btn-float has-text"><i class="icon-calendar5 text-primary"></i> <span>Schedule</span></a>
-							</div>
-						</div>
-					</div>
+				<li class="nav-item {{ (Route::is('orders') ? 'nav-item active' : '') }}">
+					<a href="/orders" class="nav-link">
+						<i class="icon-cart"></i>
+						<span>
+							Orders
+						</span>
+					</a>
+				</li>
 
-					<div class="breadcrumb-line">
-						<ul class="breadcrumb">
-							<li><a href="index"><i class="icon-home2 position-left"></i> Home</a></li>
-							<li class="active">Dashboard</li>
-						</ul>
+				<li class="nav-item {{ (Route::is('courier') ? 'nav-item active' : '') }}">
+					<a href="/courier" class="nav-link">
+						<i class="icon-truck"></i>
+						<span>
+							Associates
+						</span>
+					</a>
+				</li>
 
-						<ul class="breadcrumb-elements">
-							<li><a href="#"><i class="icon-comment-discussion position-left"></i> Support</a></li>
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-									<i class="icon-gear position-left"></i>
-									Settings
-									<span class="caret"></span>
-								</a>
+				<li class="nav-item {{ (Route::is('operators') ? 'nav-item active' : '') }}">
+					<a href="/operators" class="nav-link">
+						<i class="icon-user-lock"></i>
+						<span>
+							Operators
+						</span>
+					</a>
+				</li>
 
-								<ul class="dropdown-menu dropdown-menu-right">
-									<li><a href="#"><i class="icon-user-lock"></i> Account security</a></li>
-									<li><a href="#"><i class="icon-statistics"></i> Analytics</a></li>
-									<li><a href="#"><i class="icon-accessibility"></i> Accessibility</a></li>
-									<li class="divider"></li>
-									<li><a href="#"><i class="icon-gear"></i> All settings</a></li>
-								</ul>
-							</li>
-						</ul>
+				<li class="nav-item {{ (Route::is('customers') ? 'nav-item active' : '') }}">
+					<a href="/customers" class="nav-link">
+						<i class="icon-users4"></i>
+						<span>
+							Customers
+						</span>
+					</a>
+				</li>
+
+				<li class="nav-item-header"><div class="text-uppercase font-size-xs line-height-xs">Extra Info</div> <i class="icon-menu" title="Layout options"></i></li>
+
+				<li class="nav-item {{ (Route::is('volant_pricings') ? 'nav-item active' : '') }}">
+					<a href="/volant_pricings" class="nav-link">
+						<i class="icon-cash"></i>
+						<span>
+							Volant Pricings
+						</span>
+					</a>
+				</li>
+
+				<li class="nav-item nav-item-submenu">
+					<a href="#" class="nav-link"><i class="icon-credit-card2"></i> <span>Payments</span></a>
+
+					<ul class="nav nav-group-sub" data-submenu-title="Payments">
+						<li class="nav-item {{ (Route::is('order_payments') ? 'nav-item active' : '') }}"><a href="/order_payments" class="nav-link"><i class="icon-cash"></i><span>Order Payments</span></a></li>
+						
+						<li class="nav-item {{ (Route::is('payment_types') ? 'nav-item active' : '') }}"><a href="/payment_types" class="nav-link"><i class="icon-coins"></i><span>Payment Types</span></a></li>
+					</ul>
+				</li>
+
+				<li class="nav-item nav-item-submenu">
+					<a href="#" class="nav-link"><i class="icon-stack"></i> <span>Company Extra Datatables</span></a>
+
+					<ul class="nav nav-group-sub" data-submenu-title="Extra Datatables">
+						<li class="nav-item {{ (Route::is('account_types') ? 'nav-item active' : '') }}"><a href="/account_types" class="nav-link"><i class="icon-users4"></i><span>User Account Types</span></a></li>
+
+						<li class="nav-item {{ (Route::is('categories') ? 'nav-item active' : '') }}"><a href="/categories" class="nav-link"><i class="icon-cabinet"></i><span>Volant Categories</span></a></li>
+						
+						<li class="nav-item {{ (Route::is('package_sizes') ? 'nav-item active' : '') }}"><a href="/package_sizes" class="nav-link"><i class="icon-package"></i><span>Package Sizes</span></a></li>
+
+						<li class="nav-item {{ (Route::is('truck_types') ? 'nav-item active' : '') }}"><a href="/truck_types" class="nav-link"><i class="icon-truck"></i><span>Truck Types</span></a></li>
+
+						<li class="nav-item {{ (Route::is('user_roles') ? 'nav-item active' : '') }}"><a href="/user_roles" class="nav-link"><i class="icon-user-tie"></i><span>User Roles</span></a></li>
+					</ul>
+				</li>
+
+			</ul>
+		</div>
+		<!-- /main navigation -->
+
+	</div>
+	<!-- /sidebar content -->
+
+</div>
+<!-- /main sidebar -->
+
+
+<!-- Main content -->
+<div class="content-wrapper">
+
+	<!-- Page header -->
+	<div class="page-header">
+		<div class="page-header-content header-elements-md-inline">
+			<div class="page-title d-flex">
+				<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Home</span> - Dashboard</h4>
+				<a href="dashboard" class="header-elements-toggle text-default d-md-none"><i class="icon-more"></i></a>
+			</div>
+
+			<div class="header-elements d-none text-center text-md-left mb-3 mb-md-0">
+				<div class="btn-group">
+					<button type="button" class="btn bg-indigo-400"><i class="icon-stack2 mr-2"></i> Admin Options </button>
+					<button type="button" class="btn bg-indigo-400 dropdown-toggle" data-toggle="dropdown"></button>
+					<div class="dropdown-menu dropdown-menu-right">
+						<div class="dropdown-header">Actions</div>
+						<li><a href="#" class="dropdown-item"><i class="icon-user-lock"></i> Account security</a></li>
+						<li><a href="#" class="dropdown-item"><i class="icon-statistics"></i> Analytics</a></li>
+						<li><a href="/permissions" class="dropdown-item"><i class="icon-user-lock"></i> Operator Permissions</a></li>
+						<li><a href="/roles" class="dropdown-item"><i class="icon-user-lock"></i> Operator Roles</a></li>
+						<li class="divider"></li>
+						<li><a href="#" class="dropdown-item"><i class="icon-gear"></i> All settings</a></li>
 					</div>
 				</div>
-				<!-- /page header
+			</div>
+		</div>
+	</div>
+	<!-- /page header -->
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			jQuery.ajax({
+		      url:'{{ route('getOrderStatus') }}',
+		      method:"POST",
+		      data:{_token: '{{csrf_token()}}'},
+		      success:function(result)
+		      {
+		        $('#unassign').text(result.unassigned)
+		        $('#pick').text(result.picked_up)
+		        $('#intrans').text(result.in_transit)
+		      },
+		      error : function(){alert("Something Went Wrong.");},
+		    });
+		})
+	</script>
+

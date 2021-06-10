@@ -8,7 +8,7 @@ import Vue from 'vue'
     //local registration
     import {FormWizard, TabContent} from 'vue-form-wizard'
     import 'vue-form-wizard/dist/vue-form-wizard.min.css'
-    
+
     import VueFormGenerator from "vue-form-generator"
     import 'vue-form-generator/dist/vfg.css'
     import DatetimePicker from 'vuetify-datetime-picker'
@@ -16,6 +16,8 @@ import Vue from 'vue'
     import lang from 'element-ui/lib/locale/lang/en';
     import locale from 'element-ui/lib/locale';
     import VueLazyload from 'vue-lazyload';
+
+    import Chat from 'vue-beautiful-chat'
 
     locale.use(lang);
 
@@ -40,12 +42,12 @@ import Vue from 'vue'
     });
 
     import VueSweetalert2 from 'vue-sweetalert2';
- 
+
     // If you don't need the styles, do not connect
     import 'sweetalert2/dist/sweetalert2.min.css';
-     
-    Vue.use(VueSweetalert2);
 
+    Vue.use(Chat)
+    Vue.use(VueSweetalert2);
     Vue.use(VueRouter)
     Vue.use(Vuetify)
     Vue.use(VueTelInput)
@@ -55,12 +57,23 @@ import Vue from 'vue'
 
     import App from './views/App'
     import Home from './views/Home'
+    import Metro from './views/Metro'
     import Login from './views/Login'
     import Register from './views/Register'
-    import Orders from './views/Orders'
+    let Orders = require('./views/Orders.vue').default
     import Profile from './views/Profile'
+    import Freight from './views/Freight'
+    import ViewFreightOrder from './views/ViewFreightOrder'
+    import Viewmetro_order from './views/Viewmetro_order'
+    import Metro_orders from './views/Metro_orders'
+    import Freight_orders from './views/Freight_orders'
+    import ForgotPassword from './views/ForgotPassword'
+    import ResetPasswordForm from './views/ResetPasswordForm'
+    import Moves from './views/Moves'
+    import OrderTracker from './views/OrderTracker'
+    import EmailVerification from './views/EmailVerification'
     // import UserBoard from './views/UserBoard'
-    
+
     Vue.component('pagination', require('laravel-vue-pagination'));
 
     const router = new VueRouter({
@@ -86,6 +99,15 @@ import Vue from 'vue'
                 }
             },
             {
+                path: '/volantuser/metro',
+                name: 'metro',
+                component: Metro,
+                meta: {
+                    requiresAuth: true,
+                    is_user: true
+                }
+            },
+            {
                 path: '/volantuser/orders',
                 name: 'orders',
                 component: Orders,
@@ -102,6 +124,85 @@ import Vue from 'vue'
                     requiresAuth: true,
                     is_user: true
                 }
+            },
+            {
+                path: '/volantuser/freight',
+                name: 'freight',
+                component: Freight,
+                meta: {
+                    requiresAuth: true,
+                    is_user: true
+                }
+            },
+            {
+                path: '/volantuser/view_freight_order/:id',
+                name: 'view_freight_order',
+                component: ViewFreightOrder,
+                meta: {
+                    requiresAuth: true,
+                    is_user: true
+                }
+            },
+            {
+                path: '/volantuser/view_order/:id',
+                name: 'view_metro_order',
+                component: Viewmetro_order,
+                meta: {
+                    requiresAuth: true,
+                    is_user: true
+                }
+            },
+            {
+                path: '/volantuser/metro_orders',
+                name: 'metro_orders',
+                component: Metro_orders,
+                meta: {
+                    requiresAuth: true,
+                    is_user: true
+                }
+            },
+            {
+                path: '/volantuser/freight_orders',
+                name: 'freight_orders',
+                component: Freight_orders,
+                meta: {
+                    requiresAuth: true,
+                    is_user: true
+                }
+            },
+            { 
+                path: '/volantuser/reset-password', 
+                name: 'reset-password', 
+                component: ForgotPassword,
+              },
+              { 
+                path: '/volantuser/reset-password/:token', 
+                name: 'reset-password-form', 
+                component: ResetPasswordForm, 
+                
+              },
+              {
+                path: '/volantuser/packaging_moves',
+                name: 'packaging_moves',
+                component: Moves,
+                meta: {
+                    requiresAuth: true,
+                    is_user: true
+                }
+            },
+            {
+                path: '/volantuser/OrderTracker',
+                name: 'order_tracker',
+                component: OrderTracker,
+                meta: {
+                    requiresAuth: true,
+                    is_user: true
+                }
+            },
+            {
+                path: '/volantuser/auth/emailverification/:token',
+                name: 'emailverification',
+                component: EmailVerification,
             }
         ],
     })
@@ -115,15 +216,15 @@ import Vue from 'vue'
                 })
             } else {
                 let user = JSON.parse(localStorage.getItem('volant.user'))
-                
+
                 if (to.matched.some(record => record.meta.is_user)) {
-                   
-                
+
+
                   //       next({
-		                //     path: '/volantuser/home',
-		                //     params: { nextUrl: to.fullPath }
-		                // })
-                    
+		          //     path: '/volantuser/home',
+		          //     params: { nextUrl: to.fullPath }
+		          // })
+
                 }
                 next()
             }

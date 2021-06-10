@@ -9,33 +9,32 @@
     <link rel="icon" type="image/gif/jpg" href="/images/logo.jpg">
     <title>Volant | Co</title>
 
-    <link href="{{url('https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900')}}" rel="stylesheet" type="text/css">
-    <link href="{{url('assets/css/icons/icomoon/styles.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{url('assets/css/bootstrap.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{url('assets/css/core.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{url('assets/css/components.css')}}" rel="stylesheet" type="text/css">
-    <link href="{{url('assets/css/colors.css')}}" rel="stylesheet" type="text/css">
+    <!-- Global stylesheets -->
+    <link href="{{ url('https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900') }}" rel="stylesheet" type="text/css">
+    <link href="{{  url('global_assets/css/icons/icomoon/styles.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{  url('assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{  url('assets/css/bootstrap_limitless.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{  url('assets/css/layout.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{  url('assets/css/components.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{  url('assets/css/colors.min.css') }}" rel="stylesheet" type="text/css">
     <!-- /global stylesheets -->
 
     <!-- Core JS files -->
-    <script type="text/javascript" src="{{url('assets/js/plugins/loaders/pace.min.js')}}"></script>
-    <script type="text/javascript" src="{{url('assets/js/core/libraries/jquery.min.js')}}"></script>
-    <script type="text/javascript" src="{{url('assets/js/core/libraries/bootstrap.min.js')}}"></script>
-    <script type="text/javascript" src="{{url('assets/js/plugins/loaders/blockui.min.js')}}"></script>
+    <script src="{{ url('global_assets/js/main/jquery.min.js') }}"></script>
+    <script src="{{ url('global_assets/js/main/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url('global_assets/js/plugins/loaders/blockui.min.js') }}"></script>
     <!-- /core JS files -->
 
     <!-- Theme JS files -->
-    <script type="text/javascript" src="{{url('assets/js/plugins/forms/validation/validate.min.js')}}"></script>
-    <script type="text/javascript" src="{{url('assets/js/plugins/forms/styling/uniform.min.js')}}"></script>
+    <script src="{{ url('global_assets/js/plugins/forms/validation/validate.min.js') }}"></script>
+    <script src="{{ url('global_assets/js/plugins/forms/styling/uniform.min.js') }}"></script>
 
-    <script type="text/javascript" src="{{url('assets/js/core/app.js')}}"></script>
-    <script type="text/javascript" src="{{url('assets/js/pages/login_validation.js')}}"></script>
+    <script src="{{ url('assets/js/app.js') }}"></script>
+    <script src="{{ url('global_assets/js/demo_pages/login_validation.js') }}"></script>
+    <!-- /theme JS files -->
 </head>
 <body>
 <body class="login-container login-cover">
-
-    <!-- Page container -->
-    <div class="page-container">
 
         <!-- Page content -->
         <div class="page-content">
@@ -43,7 +42,7 @@
             <!-- Main content -->
             <div class="content-wrapper">
 
-                <div class="content pb-20">
+                <div class="content d-flex justify-content-center align-items-center">
                     @yield('content')
                 </div>
 
@@ -52,9 +51,6 @@
 
         </div>
         <!-- /page content -->
-
-    </div>
-    <!-- /page container -->
 
 </body>
 </html>

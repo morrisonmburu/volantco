@@ -42,19 +42,29 @@ return [
         ],
 
         'api' => [
-            'driver' => 'token',
+            'driver' => 'passport',
             'provider' => 'users',
             'hash' => false,
         ],
 
-        'volantuser' => [
+        'admin' => [
             'driver' => 'session',
-            'provider' => 'volantusers',
+            'provider' => 'admins',
         ],
 
-        'volantuser-api' => [
+        'admin-api' => [
+            'driver' => 'token',
+            'provider' => 'admins',
+        ],
+
+        'rider' => [
+            'driver' => 'session',
+            'provider' => 'riders',
+        ],
+
+        'rider-api' => [
             'driver' => 'passport',
-            'provider' => 'volantusers',
+            'provider' => 'riders',
         ],
     ],
 
@@ -81,11 +91,15 @@ return [
             'model' => App\User::class,
         ],
 
-        'volantusers' => [
+        'admins' => [
             'driver' => 'eloquent',
-            'model' => App\Volantuser::class,
+            'model' => App\Admins::class,
         ],
 
+        'riders' => [
+            'driver' => 'eloquent',
+            'model' => App\Couriers::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -114,11 +128,16 @@ return [
             'expire' => 60,
         ],
 
-        'volantusers' => [
-            'provider' => 'volantusers',
+        'admins' => [
+            'provider' => 'admins',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+
+        'riders' => [
+            'provider' => 'riders',
             'table' => 'password_resets',
             'expire' => 60,
         ],
     ],
-
 ];

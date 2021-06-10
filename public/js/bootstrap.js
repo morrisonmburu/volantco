@@ -37093,12 +37093,14 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 // import Echo from 'laravel-echo'
-// window.Pusher = require('pusher-js');
+// window.io = require('socket.io-client');
 // window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: process.env.MIX_PUSHER_APP_KEY,
-//     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-//     encrypted: true
+//     broadcaster: 'socket.io',
+//     host: window.location.hostname + ':6379'
+// }); 
+// window.Echo.channel('test-event')
+//     .listen('ExampleEvent', (e) => {
+//         console.log(e);
 // });
 
 /***/ }),
@@ -37110,7 +37112,7 @@ if (token) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /home/morris/volant/resources/js/bootstrap.js */"./resources/js/bootstrap.js");
+module.exports = __webpack_require__(/*! C:\Users\morri\Documents\volant\resources\js\bootstrap.js */"./resources/js/bootstrap.js");
 
 
 /***/ })

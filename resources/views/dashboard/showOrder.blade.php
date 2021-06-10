@@ -15,145 +15,146 @@
 @endif
 <!-- Main content --> 
 <br>
-<section class="content">
-	<div class="row">
-		<div class="col-sm-12 lobipanel-parent-sortable ui-sortable" data-lobipanel-child-inner-id="cpa90TSeTV">
-			<div class="panel panel-bd lobidrag lobipanel lobipanel-sortable" data-inner-id="cpa90TSeTV" data-index="0">
-				<div class="panel-heading ui-sortable-handle">
-					<div class="btn-group"> 
-						<a style="background-color:#26a69a; border-color: #26a69a"  class="btn btn-success" href="\orders\"> <i class="fa fa-plus"></i> Go back</a> 
-					</div>
-					<div class="dropdown pull-right"><ul class="dropdown-menu dropdown-menu-right"><li><a data-func="editTitle" data-tooltip="Edit title" data-toggle="tooltip" data-title="Edit title" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-pencil"></i><span class="control-title">Edit title</span></a></li><li><a data-func="unpin" data-tooltip="Unpin" data-toggle="tooltip" data-title="Unpin" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-move"></i><span class="control-title">Unpin</span></a></li><li><a data-func="reload" data-tooltip="Reload" data-toggle="tooltip" data-title="Reload" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-reload"></i><span class="control-title">Reload</span></a></li><li><a data-func="minimize" data-tooltip="Minimize" data-toggle="tooltip" data-title="Minimize" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-minus"></i><span class="control-title">Minimize</span></a></li><li><a data-func="expand" data-tooltip="Fullscreen" data-toggle="tooltip" data-title="Fullscreen" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-fullscreen"></i><span class="control-title">Fullscreen</span></a></li><li><a data-func="close" data-tooltip="Close" data-toggle="tooltip" data-title="Close" data-placement="bottom" data-original-title="" title=""><i class="panel-control-icon ti-close"></i><span class="control-title">Close</span></a></li></ul><div class="dropdown-toggle" data-toggle="dropdown"><span class="panel-control-icon glyphicon glyphicon-cog"></span></div></div></div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="panel-header">
-								<div class="col-sm-4 pull-right">
-									<div class="dataTables_length">
 
-										<a href="/csvdrivers" class="btn btn-default buttons-csv buttons-html5 btn-sm" tabindex="0"><span>CSV</span></a>
+<div class="content">
+	<!-- Tasks -->
+	<div class="timeline-row">
+		<div class="timeline-icon">
+			<img alt="">
+		</div>
 
-										<a href="/exceldrivers" class="btn btn-default buttons-excel buttons-html5 btn-sm" tabindex="0"><span>Excel</span></a>
-
-										<a href="/pdfdrivers" class="btn btn-default buttons-pdf buttons-html5 btn-sm" tabindex="0"><span>PDF</span></a>
-
-									</div>
-								</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="card border-left-3 border-left-primary rounded-left-0">
+					<div class="card-body">
+						<div class="d-sm-flex align-item-sm-center flex-sm-nowrap">
+							<div>
+								<h6><a href="#">#{{ $data[1]->order_id }}. Origin: {{ $data[1]->origin[0] }}</a></h6>
+								<a href="#" class="text-default">&nbsp;</a>
 							</div>
 
+							<ul class="list list-unstyled mb-0 mt-3 mt-sm-0 ml-auto">
+								<li><span class="text-muted">Order Made At: {{ $data[1]->created_at }}</span></li>
+								<li><span class="text-muted">Order Made By: {{ $data[1]->order_created_at }}</span></li>
+								<li class="dropdown">
+									Order Status: &nbsp; 
+									<a href="#" class="badge badge-primary align-top">
+										@if($data[1]->status == 0)
+											Unassigned
+										@elseif($data[1]->status == 1)
+											Accepted
+										@elseif($data[1]->status == 2)
+											Picked Up
+										@elseif($data[1]->status == 3)
+											In Transit
+										@elseif($data[1]->status == 4)
+											Complete
+										@elseif($data[1]->status == 5)
+											Cancelled
+										@endif
+									</a>
+								</li>
+							</ul>
 						</div>
+					</div>
+				</div>
+			</div>
 
-						<div class="table-responsive">
-
-
-							<div class="panel panel-info">
-								<div class="panel-heading" style="background-color:#26a69a;">
-									<h3 class="panel-title label">{{$data->firstName}} {{$data->lastName}}</h3>
-								</div>
-								<div class="panel-body">
-									<div class="row">
-
-										<div class=" col-md-9 col-lg-9 "> 
-											<table class="table table-user-information" style="align-items: center;">
-												<tbody>
-													<tr>
-														<td>ID</td>
-														<td>{{$data->id}}</td>
-													</tr>
-													<tr>
-														<td>To</td>
-														<td>{{$data->to}}</td>
-													</tr>
-
-													<tr>
-														<tr>
-															<td>From</td>
-															<td>{{$data->from}}</td>
-														</tr>
-														<tr>
-															<td>Price</td>
-															<td>{{ $data->price }}</td>
-														</tr>
-														<tr>
-															<td>{{$data->email}}</td>
-															<td>{{$data->phone}}</td>
-														</tr>
-														<tr>
-															<td>Package</td>
-															<td>{{$data->package}}</td>
-														</tr>
-														<tr>
-															<td>Date Of Delivery</td>
-															<td>{{$data->time}} </td>
-														</tr>
-														<tr>
-															<td>Instructions</td>
-															<td>{{$data->instructions}}</td>
-														</tr>
-														<tr>
-															<td>Status</td>
-															<td>
-																@if($data->mark == 0 && $data->cancel == 0)
-																<span class="bg bg-warning">In transit</span>
-																@elseif($data->mark == 1 && $data->cancel == 0)
-																<span class="bg bg-warning">Completed</span>
-																@else
-																<span class="bg bg-warning">Cancelled</span>
-																@endif
-															</td>
-														</tr>
-
-													</tr>
-
-												</tbody>
-											</table>
-										</div>
-									</div>
-								</div>
-								<div class="panel-footer">
-									<!--                        <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>-->
-									
-									<span class="pull-left" style="padding: 10px;">
-										<button class="btn btn-info" onclick="complete({{ $data->id }})">Complete</button>
-									</span>
-									<span class="pull-left" style="padding: 10px;">
-										<button title="cancel order" class="btn btn-danger" onclick="cancel({{ $data->id }})"data-original-title="Remove this user" data-toggle="tooltip"><i class="glyphicon glyphicon-remove"></i>Cancel</button>
-									</span>
-
-									<span class="pull-left" style="padding: 10px;">
-										<a href="/orders/{{$data->id}}/dispatch" title="dispatch order" class="btn btn-warning" data-original-title="Remove this user" data-toggle="tooltip"><i class="fa fa-truck"></i>Dispatch</a>
-									</span>
-									
-									<span class="pull-right">
-										<a title="Delete" href="/orders/{{$data->id}}/destroy" data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-danger btn-xs"><i class="glyphicon glyphicon-remove"></i></a>&nbsp;
-									</span>
-								</div>
-
+			<div class="col-lg-6">
+				<div class="card border-left-3 border-left-danger rounded-left-0">
+					<div class="card-body">
+						<div class="d-sm-flex align-item-sm-center flex-sm-nowrap">
+							<div>
+								<h6 class=""><a href="#">#{{ $data[1]->order_id }}. Destinaiton: {{ $data[1]->destination }}</a></h6>
+								<a href="#" class="text-default">&nbsp;</a>
 							</div>
+
+							<ul class="list list-unstyled mb-0 mt-3 mt-sm-0 ml-auto">
+								<li><span class="text-muted">Order Made At: {{ $data[1]->order_created_at }}</span></li>
+							</ul>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</section> <!-- /.content -->
 
-</div>
-<!-- /content area -->
+		<div class="row">
+			<div class="col-lg-6">
+				<div class="card border-left-3 border-left-primary rounded-left-0">
+					<div class="card-body">
+						<div class="d-sm-flex align-item-sm-center flex-sm-nowrap">
+							<div>
+								<h6><a href="#">Sender Name: {{ $data[1]->sender_name }}</a></h6>
+								<a href="#" class="text-default">&nbsp;</a>
+							</div>
 
-</div>
-<!-- /page content -->
+							<ul class="list list-unstyled mb-0 mt-3 mt-sm-0 ml-auto">
+								<li><span class="text-muted">Sender Phone Number: {{ $data[1]->sender_phone }} </span></li>
+							</ul>
+							<ul class="list list-unstyled mb-0 mt-3 mt-sm-0 ml-auto">
+								<li><span class="text-muted">Description: {{ $data[1]->description }}</span></li>
+							</ul>
+							<ul class="list list-unstyled mb-0 mt-3 mt-sm-0 ml-auto">
+								<li><span class="text-muted">Instructions: {{ $data[1]->instructions }}</span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
 
+			<div class="col-lg-6">
+				<div class="card border-left-3 border-left-danger rounded-left-0">
+					<div class="card-body">
+						<div class="d-sm-flex align-item-sm-center flex-sm-nowrap">
+							<div>
+								<h6 class=""><a href="#">Recipient Name: {{ $data[1]->recipient_name }}</a></h6>
+								<a href="#" class="text-default">&nbsp;</a>
+							</div>
+
+							<ul class="list list-unstyled mb-0 mt-3 mt-sm-0 ml-auto">
+								<li><span class="text-muted">Recipient Phone Number: {{ $data[1]->recipient_phone }} </span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="card border-left-3 border-left-primary rounded-left-0">
+					<div class="card-body">
+						<div class="d-sm-flex align-item-sm-center flex-sm-nowrap">
+							<div>
+								<h6><a href="#">Package Name: {{ $data[1]->name }}</a></h6>
+								<a href="#" class="text-default">&nbsp;</a>
+							</div>
+
+							<ul class="list list-unstyled mb-0 mt-3 mt-sm-0 ml-auto">
+								<li><span class="text-muted">Order Amount: Ksh {{ $data[1]->total }}</span></li>
+							</ul>
+							<ul class="list list-unstyled mb-0 mt-3 mt-sm-0 ml-auto">
+								<li><span class="text-muted">Number Of Stops:{{ $data[1]->stops_count }} </span></li>
+							</ul>
+							<ul class="list list-unstyled mb-0 mt-3 mt-sm-0 ml-auto">
+								<li><span class="text-muted">Distance Covered: {{ $data[1]->distance }}</span></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- /tasks -->
 </div>
-<!-- /page container -->
 
 <script type="text/javascript">
 	function complete(id){
-		var mark = 1;
 		var id = id;
 
 		jQuery.ajax({
 			url:'{{ route('orders.complete') }}',
 			method:"POST",
-			data:{mark: mark, id: id, _token: '{{csrf_token()}}'},
+			data:{id: id, _token: '{{csrf_token()}}'},
 			success:function(result)
 			{
 				swal('Order'+result, "has been completed successfully!", "success").then(function(){ 
@@ -204,8 +205,7 @@
 	}
 </script>
 
-</body>
-</html>
+
 
 
 @endsection

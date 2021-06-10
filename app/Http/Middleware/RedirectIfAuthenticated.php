@@ -17,10 +17,32 @@ class RedirectIfAuthenticated
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        if (Auth::guard($guard)->check()) {
-            return redirect('/dashboard');
+
+        // dd($guard);
+
+        switch ($guard) {
+            case 'admin':
+                // dd($guard);
+                if (Auth::guard($guard)->check()) {
+                    return redirect('/dashboard');
+                }
+                break;
+      
+            case 'web':
+                if (Auth::guard($guard)->check()) {
+                    return redirect('/volantuser/home');
+                }
+                break;
+
+            case 'rider':
+                if (Auth::guard($guard)->check()) {
+                    return redirect('/rider-home');
+                }
         }
 
+        // if (Auth::guard($guard)->check()) {
+        //     return redirect('/admin');
+        // }
         return $next($request);
     }
 }

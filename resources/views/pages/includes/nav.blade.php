@@ -1,58 +1,123 @@
-<!-- Navbar -->
-  <nav class="navbar navbar-expand-lg bg-primary fixed-top navbar-transparent " color-on-scroll="400">
-    <div class="container">
-      <div class="navbar-translate">
-        <a class="navbar-brand" href="/" rel="tooltip" title="Volant Co" data-placement="bottom">
-          <img class="n-logo rounded-circle" style="width: 4.5em; height: 4.5em;" src="/images/logo.jpg" alt="">
-          Volant Co
-        </a>
-        <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-bar top-bar"></span>
-          <span class="navbar-toggler-bar middle-bar"></span>
-          <span class="navbar-toggler-bar bottom-bar"></span>
-        </button>
-      </div>
-      <div class="collapse navbar-collapse justify-content-end" id="navigation" data-nav-image="/front/img/blurred-image-1.jpg">
-        <ul class="navbar-nav">
-          <li class="nav-item dropdown">
-            <a href="#" class="nav-link dropdown-toggle" id="navbarDropdownMenuLink1" data-toggle="dropdown">
-              <i class="now-ui-icons design_app"></i>
-              <p>Our Packages</p>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink1">
-              <a class="dropdown-item" href="/packages">
-                <i class="now-ui-icons business_chart-pie-36"></i> Metro Deliveris
-              </a>
-              <a class="dropdown-item" target="_blank" href="/packages">
-                <i class="now-ui-icons design_bullet-list-67"></i> Cargo and Freight
-              </a>
 
-               <a class="dropdown-item" target="_blank" href="/packages">
-                <i class="now-ui-icons design_bullet-list-67"></i> Packaging and Moves
-              </a>
+<section id="header-wrapper" class="clearfix header-wrapper style03 header-transparent" style="top: 0px;">
 
-               <a class="dropdown-item" target="_blank" href="/packages">
-                <i class="now-ui-icons design_bullet-list-67"></i> Construction Logistics
-              </a>
+    <header id="header" class="header-style03 main-nav style_more">
 
+        <div class="logo-info-container">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- .logo start -->
+                        <div class="logo">
+                            <a href="/">
+                                <img src="{{ url('/images/logo.jpg') }}" class="logo1-0" alt="Volantco"/>
+                                <p class="logo1-1">Volant&copy</p>
+                                {{-- <span class="logo1-2"></span> --}}
+                            </a>
+                        </div><!-- .logo end -->
+                        </div>
+                        <div class="col-md-6">
+                            <div class="info-container">
+                                <ul id="quick-links">
+                                    <li class="phone_nav">
+                                        <i class="fa fa-phone"></i>
+                                        <span>+00 41 895 785 6985</span>
+                                    </li>
+                                    <li class="phone_nav">
+                                        <i class="fa fa-envelope"></i>
+                                        <span><a href="#">Contact us today</a></span>
+                                    </li>
+                                    <li class="phone_nav">
+                                        <span><img src="{{ url('/images/ke-small.png') }}" style="height: 1.5em; width: 2em;" alt="English"></span>
+                                    </li>
+                                </ul><!-- .contact-info end -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link btn btn-neutral" href="/volantuser/login" target="_blank">
-              <i class="now-ui-icons users_circle-08"></i>
-              <p>Login</p>
-            </a>
-          </li>
 
-          <li class="nav-item">
-            <a class="nav-link btn btn-neutral" href="/volantuser/register" target="_blank">
-              <i class="now-ui-icons users_single-02"></i>
-              <p>Sign In</p>
-            </a>
-          </li>
-   
-        </ul>
-      </div>
+            <div class="header-inner">
+
+                <!-- .container start -->
+                <div class="container">
+
+                    <div class="main-nav">
+                        <div class="row">
+                            <div class="col-md-12">
+
+                                <!-- .navbar.pi-mega start -->
+                                <nav class="navbar navbar-default nav-left pi-mega" role="navigation">  
+
+                                    <!-- Collect the nav links, forms, and other content for toggling -->
+                                    <div class="collapse navbar-collapse">
+                                        <ul id="menu-menu" class="nav navbar-nav pi-nav menu"><li><a href="/">Home</a>
+                                        </li>
+                                        <li id="menu-item-967" class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor menu-item-has-children menu-item-967 dropdown"><a href="#" data-toggle="dropdown">About<span></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li id="menu-item-968" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-968 dropdown"><a href="/about_us">About Us</a></li>
+                                                <li id="menu-item-969" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-969 dropdown"><a href="/driver_application">Driver With Us</a></li>
+                                            </ul>
+                                        </li>
+                                        <li id="menu-item-976" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-976 dropdown"><a href="#" data-toggle="dropdown">Services<span></span></a>
+                                            <ul class="dropdown-menu">
+                                                <li id="menu-item-979" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-979 dropdown"><a href="/metro_services">Metro Delivery Solution</a></li>
+                                                <li id="menu-item-980" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-980 dropdown"><a href="/freight_services">Freight & Cargo Solution</a></li>
+                                                <li id="menu-item-981" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-981 dropdown"><a href="/packaging_services">Packaging & Moves Solution</a></li>
+                                                <li id="menu-item-982" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-982 dropdown"><a href="/construction_services">Construction Logistics Solution</a></li>
+                                                <li id="menu-item-982" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-982 dropdown"><a href="/consult_services">Consulting Services</a></li>
+                                            </ul>
+                                        </li>
+                                        
+                                        <li id="menu-item-993" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-993 dropdown"><a href="/contact_us">Contact Us</a></li>
+                                    </ul>            <!-- responsive navigation start -->
+                                    <div id="dl-menu" class="dl-menuwrapper">
+                                        <button class="dl-trigger">Open Menu</button>
+                                        <ul id="menu-menu-1" class="menu dl-menu">
+                                            <li>
+                                                <a href="/">Home</a>
+                                                <li>
+                                                    <a href="#">About</a>
+                                                    <ul class="dl-submenu">
+                                                        <li><a href="/about_us">About Us</a></li>
+                                                        <li><a href="/driver_application">Driver With Us</a></li>
+                                                    </ul><!-- dl-submenu end -->
+                                                </li>
+                                                <li>
+                                                    <a href="#">Services</a>
+                                                    <ul class="dl-submenu">
+                                                        <li><a href="/metro_services">Metro Delivery Solution</a></li>
+                                                        <li><a href="/freight_services">Freight & Cargo Solution</a></li>
+                                                        <li><a href="/packaging_services">Packaging & Moves Solution</a></li>
+                                                        <li><a href="/construction_services">Construction Logistics Solution</a></li>
+                                                        <li><a href="/consult_services">Consulting Services</a></li>
+                                                    </ul><!-- dl-submenu end -->
+                                                </li>
+                                                <li><a href="/contact_us">Contact</a></li>
+                                                <li><a href="/volantuser/login">Sign In</a></li>
+                                                <li><a href="/volantuser/register">Register</a></li>
+                                            </ul> <!-- responsive navigation end -->
+                                </div>
+
+                                <div id="btn1">
+                                   <a class="btn btn-yellow" href="/volantuser/register" id="btn2">
+                                        <span>Sign Up</span>
+                                    </a> 
+                                </div>
+
+                                <div id="btn2">
+                                   <a class="btn btn-yellow" href="/volantuser/login">
+                                        <span>Sign In</span>
+                                    </a> 
+                                </div>  
+                                
+                            </div><!-- .navbar.navbar-collapse end --> 
+                        </nav><!-- .navbar.pi-mega end -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </nav>
-  <!-- End Navbar -->
+</header>
+</section>

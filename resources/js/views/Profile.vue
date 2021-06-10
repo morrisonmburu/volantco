@@ -24,7 +24,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<v-toolbar
-						color="info"
+						color="#8F0236"
 						dark
 						flat
 						align-center
@@ -66,7 +66,7 @@
 							Successfully edited Your Profile
 						</v-alert>
 
-						<card type="login" plain>
+						
 							<div slot="header" class="logo-container">
 								<img v-lazy="'img/now-logo.png'" alt="" />
 							</div>
@@ -81,9 +81,21 @@
 									<fg-input
 										class="input-lg"
 										addon-left-icon="now-ui-icons users_circle-08"
-										placeholder="Enter Username ..."
-										v-model="name"	
-										name="name"					
+										placeholder="Enter First Name ..."
+										v-model="f_name"
+										name="f_name"
+										type="text"
+										:rules="nameRules"
+										required
+										>
+									</fg-input>
+
+									<fg-input
+										class="input-lg"
+										addon-left-icon="now-ui-icons users_circle-08"
+										placeholder="Enter Last Name ..."
+										v-model="l_name"
+										name="l_name"
 										type="text"
 										:rules="nameRules"
 										required
@@ -109,13 +121,28 @@
 										label="Enter Phone Number"
 										autofocus
 									></vue-tel-input>
+
+									<v-select
+									  class="pt-5"
+									  v-model="serviceType"
+							          :items="services"
+							          item-text="name"
+			          				  item-value="name"
+							          label="Select Account Type"
+							          dense
+							          outlined
+							        >
+							        	<template v-slot:selection="{ item, index }">
+									        {{ item.name }}
+									     </template>
+							        </v-select>
 								</div>
 							</div>
 
 					<button  
 					@click="edit"
-					style="color:#fff;"
-					class="btn btn-info btn-round btn-lg btn-block"
+					style="color:#fff; background-color: #8F0236;"
+					class="btn btn-round btn-lg btn-block"
 					>
 					<div v-if="loading">
 						<v-progress-circular
@@ -134,7 +161,7 @@
 
 
 					</v-form>
-					</card>
+					
 					</div>
 					</v-card>	
 					</div>
@@ -145,7 +172,7 @@
 					<div class="col-md-3"></div>
 					<div class="col-md-6">
 						<v-toolbar
-						color="info"
+						color="#8F0236"
 						dark
 						flat
 						align-center
@@ -186,7 +213,7 @@
 							{{ successMessage }}
 						</v-alert>
 
-						<card type="login" plain>
+					
 							<div slot="header" class="logo-container">
 								<img v-lazy="'img/now-logo.png'" alt="" />
 							</div>
@@ -237,8 +264,8 @@
 
 					<button  
 					@click="changePassword"
-					style="color:#fff;"
-					class="btn btn-info btn-round btn-lg btn-block"
+					style="color:#fff; background-color: #8F0236;"
+					class="btn btn-round btn-lg btn-block"
 					>
 					<div v-if="loading">
 						<v-progress-circular
@@ -257,7 +284,7 @@
 
 
 					</v-form>
-					</card>
+	
 					</div>
 					</v-card>	
 					</div>
@@ -279,7 +306,8 @@
 		},
 		data: () => ({
 			valid: false,
-			name: "",
+			l_name: "",
+			f_name: "",
 			email: "",
 			password: "",
 			password_confirmation: "",
@@ -291,6 +319,8 @@
 			tab: null,
 			oldpassword: '',
 			successMessage: '',
+			services: [],
+			serviceType: '',
 			nameRules: [
 				v => !!v || 'Name is required',
 				v => v.length <= 50 || 'Name should be less than 50 letters',
@@ -322,11 +352,24 @@
 	        axios.post(`/api/getuser`, {user_id}).then(response => {
 			
 			let data = response.data
-			this.name = data.name
+			this.f_name = data.f_name
+			this.l_name = data.l_name
 			this.email = data.email
-			this.phone = data.phone				        	
+			this.phone = data.phone
+			if(data.account_type === 1){
+	          this.serviceType = 'Individual'
+	        }else{
+	          this.serviceType = 'Corporate'
+	        }
 
 	        })
+
+	        axios.get(`/api/getServiceCustomer`).then(response => {
+		        let data = []
+		        if(response.data.length != 0){
+		        this.services = response.data
+		       }
+		     })
 		},
 		methods: {
 			edit(e) {
@@ -343,17 +386,20 @@
                     this.error = true
                 }else{
                 	this.error = false
-                	let name = this.name
+                	let f_name = this.f_name
+                	let l_name = this.l_name
 	                let email = this.email
 	                let phone = this.phone
+	                let serviceType = this.serviceType
 
-	                axios.post('/api/editInfo', {user_id, name, email, phone}).then(response => {
+	                axios.post('/api/editInfo', {f_name, l_name, user_id, name, email, phone, serviceType}).then(response => {
 	                    let data = response.data
 	                    this.success = true
 	                    this.successMessage = "Personal Information Successfully Edited"
 
 	                    let user = data.user
-	                    this.name = user.name
+	                    this.f_name = data.f_name
+	                    this.l_name = data.l_name
 	                    this.email = user.email
 	                    this.phone = user.phone
 
